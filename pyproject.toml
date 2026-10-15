@@ -1,0 +1,11 @@
+[project]
+name = "amerika-social-desktop"
+version = "1.0.0"
+description = "Native Amerika Social desktop application"
+requires-python = ">=3.12,<3.14"
+license = "GPL-3.0-only"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+qt_api = "pyside6"
+pythonpath = ["."]

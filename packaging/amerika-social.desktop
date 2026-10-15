@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Amerika Social
+Comment=Why Can't We Be Friends?
+Type=Application
+Exec=AmerikaSocial
+Icon=amerika-social
+Terminal=false
+Categories=Network;InstantMessaging;
+StartupWMClass=AmerikaSocial
