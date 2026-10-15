@@ -32,7 +32,7 @@ Sessions are stored in Windows Credential Manager, macOS Keychain, or a Linux Se
 - Amerika Social Plus: existing entitlements sync across clients; purchase/manage via secure Stripe browser checkout. Apple subscriptions are managed separately through Apple. Desktop apps do not claim StoreKit purchases or collect card data.
 - Role-protected moderation/admin dashboard: reports, content/account review, reversible decisions with evidence, audit, staff roles, moderation OAuth MCP and webhook controls, private Dating reports, backup status/actions and deletion jobs. Server authorization remains authoritative.
 
-Use Refresh/F5 (or the platform refresh shortcut) to reload. Editable form drafts are preserved during refresh. Ctrl+N writes a post; Ctrl+K opens discovery; Alt+Left navigates back. Native system file pickers, menus, keyboard focus and selectable text are supported. Video playback uses Qt Multimedia and available system codecs. Location is opt-in; some Linux environments have no location provider, in which case the feature reports that it is unavailable.
+Use the top-right Refresh button, F5, Ctrl+R on Windows/Linux, or Command+R on macOS to reload the current view and account status. Editable form drafts are preserved during refresh. Ctrl+N writes a post; Ctrl+K opens discovery; Alt+Left navigates back. Native system file pickers, menus, keyboard focus and selectable text are supported. Video playback uses Qt Multimedia and available system codecs. Location is opt-in; some Linux environments have no location provider, in which case the feature reports that it is unavailable.
 
 ## Build and test
 

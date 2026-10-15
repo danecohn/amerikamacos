@@ -60,3 +60,7 @@ def test_disclosure_collapses_without_empty_boxes(window,qtbot):
 def test_bundled_font_can_render_the_brand(window):
     from PySide6.QtGui import QRawFont
     w,api=window;assert QRawFont.fromFont(w.font()).supportsCharacter(65)
+
+def test_refresh_button_and_menu_shortcuts_reload_native_data(window,qtbot):
+    from PySide6.QtGui import QAction,QKeySequence
+    w,api=window;before=len([p for p,b in api.calls if p.startswith('feed')]);refresh=next(a for a in w.findChildren(QAction) if a.text()=='Refresh');keys=[k.toString(QKeySequence.SequenceFormat.PortableText) for k in refresh.shortcuts()];assert 'F5' in keys;assert 'Ctrl+R' in keys;refresh.trigger();qtbot.wait(30);assert len([p for p,b in api.calls if p.startswith('feed')])>before;assert any(p=='me' for p,b in api.calls)

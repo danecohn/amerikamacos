@@ -26,7 +26,7 @@ class Composer(QDialog):
         layout.setContentsMargins(24,24,24,24);layout.setSpacing(16);layout.addWidget(text(self.windowTitle(),True));layout.addWidget(row(Avatar(self.api,bot or app.me),text((bot or app.me)['name']+'  '+handle(bot or app.me))))
         if parent_post or quote_post:layout.addWidget(text((parent_post or quote_post).get('text','')))
         self.input=QPlainTextEdit((edit or {}).get('text',''));self.input.setPlaceholderText('What’s on your mind?');self.input.setMinimumHeight(180);self.input.setAccessibleName('Post text');layout.addWidget(self.input)
-        self.cap=833 if (bot or app.me).get('plus') else 300;self.counter=text('');layout.addWidget(self.counter);self.input.textChanged.connect(self.count);self.count()
+        self.cap=833 if (bot or app.me).get('plus') or app.me.get('plus') else 300;self.counter=text('');layout.addWidget(self.counter);self.input.textChanged.connect(self.count);self.count()
         self.destination=QComboBox();self.destination.addItem('Main timeline','');layout.addWidget(self.destination)
         self.api.request('communities/list?joined=1',done=lambda d:self.groups(d,community),error=lambda e:None)
         if parent_post or edit:self.destination.hide()

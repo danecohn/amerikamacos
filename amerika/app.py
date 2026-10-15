@@ -101,7 +101,10 @@ class MainWindow(QMainWindow):
         appmenu=self.menuBar().addMenu('Amerika');view=self.menuBar().addMenu('View');help_menu=self.menuBar().addMenu('Help')
         for menu,label,shortcut,call in [(appmenu,'Write a post','Ctrl+N',self.compose),(appmenu,'Sign in','',self.signin),(appmenu,'Sign out','',self.signout),(appmenu,'Quit',QKeySequence.StandardKey.Quit,self.close),(view,'Back','Alt+Left',self.back),(view,'Refresh',QKeySequence.StandardKey.Refresh,self.refresh),(view,'Search','Ctrl+K',self.explore)]:
             action=QAction(label,self)
-            if shortcut:action.setShortcut(shortcut)
+            if label=='Refresh':
+                bindings=QKeySequence.keyBindings(QKeySequence.StandardKey.Refresh)+[QKeySequence('F5'),QKeySequence('Ctrl+R')]
+                action.setShortcuts(list({key.toString():key for key in bindings}.values()))
+            elif shortcut:action.setShortcut(shortcut)
             action.triggered.connect(lambda checked=False,fn=call:fn());menu.addAction(action)
         for label,path in [('API documentation','/agent.md'),('Privacy policy','/privacy'),('Terms and rules','/terms'),('Support','/support')]:
             action=QAction(label,self);action.triggered.connect(lambda checked=False,p=path:open_external(ORIGIN+p));help_menu.addAction(action)
@@ -124,6 +127,7 @@ class MainWindow(QMainWindow):
         if len(self.history)>1:self.history.pop();self.show_page(self.history[-1],False)
     def refresh(self):
         if self.page:self.page.refresh()
+        if self.me:self.update_me()
     def restore(self,data):
         self.me=data.get('actor')
         if not self.me and self.api.token:self.api.clear()
