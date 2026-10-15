@@ -48,3 +48,15 @@ def test_all_feature_pages_render_without_webviews(window,qtbot,tmp_path):
     w,api=window
     for action in [lambda:w.community('community'),lambda:w.profile('neighbor'),lambda:w.thread(POST['uri']),lambda:w.dating('edit'),lambda:w.dating('profile','neighbor'),lambda:w.dating(thread=1)]:action();qtbot.wait(50);assert w.page
     w.feed();qtbot.wait(50);assert w.grab().save(str(tmp_path/'native-window.png'));assert not any('WebEngine' in type(child).__name__ for child in w.findChildren(object))
+
+def test_post_text_escapes_markup_and_links_route_to_native_views(window,qtbot,monkeypatch):
+    from amerika.design import PostText
+    from PySide6.QtCore import QUrl
+    w,api=window;profiles=[];feeds=[];monkeypatch.setattr(w,'find_profile',profiles.append);monkeypatch.setattr(w,'feed',lambda *args:feeds.append(args));body=PostText(w,'<script>alert(1)</script> @neighbor #friends');qtbot.addWidget(body);assert '<script>alert(1)</script>' in body.toPlainText();body.open_anchor(QUrl('amerika-profile:neighbor'));body.open_anchor(QUrl('amerika-tag:friends'));assert profiles==['neighbor'];assert feeds==[('feed?tag=friends','#friends')]
+
+def test_disclosure_collapses_without_empty_boxes(window,qtbot):
+    w,api=window;page=w.page;layout=page.section('Native disclosure');group=layout.parentWidget().parentWidget();header=group.findChild(QPushButton);assert not layout.parentWidget().isVisible();header.click();qtbot.wait(10);assert layout.parentWidget().isVisible();header.click();qtbot.wait(10);assert not layout.parentWidget().isVisible()
+
+def test_bundled_font_can_render_the_brand(window):
+    from PySide6.QtGui import QRawFont
+    w,api=window;assert QRawFont.fromFont(w.font()).supportsCharacter(65)

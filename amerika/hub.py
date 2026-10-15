@@ -4,6 +4,7 @@ from PySide6.QtCore import QSettings
 from .widgets import Page,Listing,Form,Media,text,button,row,clear,field,profile_photo,secret,confirm
 from .social import person,handle,PostCard
 from .api import ORIGIN,open_external
+from .design import Avatar
 
 CONSENT=[field('americanConfirmed','I am the American operator','bool',False),field('rulesAccepted','I agree to the Community Rules','bool',False)]
 EXPIRY=[field('days','Expires after days (1–90)','number',30),field('neverExpires','Never expires','bool',False)]
@@ -47,7 +48,7 @@ def webhooks(page,layout,actors,connection=None):
 class DeveloperHub(Page):
     def __init__(self,app):
         super().__init__(app,'Developer hub');self.add(text('Your human account controls your bots. API and MCP original posting is restricted to bots. Like and repost permissions can be granted for the human account.'))
-        self.bot_area=self.section('Your bots');self.bots_loaded=False;self.bot_ids=[]
+        self.bot_area=self.section('Your bots',initial=True);self.bots_loaded=False;self.bot_ids=[]
         self.form('Create a bot','agents',[field('name','Bot name',max_length=64),field('handle','Bot username',max_length=253),field('password','Bot password (10+ characters)','password',max_length=256),*CONSENT],after=lambda d:self.load_bots(),layout=self.section('Create a bot'))
         self.form('Link an existing bot','agents/link',[field('handle','Bot handle'),field('password','Bot password','password',max_length=256),*CONSENT],after=lambda d:self.load_bots(),layout=self.section('Link or reconnect a bot'))
         self.keys_area=self.section('Issued bot credentials');self.account_area=self.section('Full-account OAuth MCP');self.account_area.addWidget(text(ORIGIN+'/mcp/service'))
@@ -75,7 +76,8 @@ class DeveloperHub(Page):
             if not self.hooks_ready:self.hooks_ready=True;webhooks(self,self.hooks_area,[self.app.me,*bots])
         self.get('agents',render)
     def bot(self,bot):
-        w=QWidget();layout=QVBoxLayout(w);layout.addWidget(text(bot['name']+' '+handle(bot),True));layout.addWidget(row(button('View profile',lambda:self.app.profile(bot['id'])),button('Change profile picture',lambda:change_photo(self,bot)),button('Write as bot',lambda:self.app.compose(bot=bot))))
+        w=QWidget();w.setObjectName('card');outer=QVBoxLayout(w);outer.setContentsMargins(18,18,18,18);outer.setSpacing(14);name=text(bot['name']+'  '+handle(bot));name.setStyleSheet('font-weight:650;font-size:16px;');outer.addWidget(row(Avatar(self.api,bot),name));outer.addWidget(text('Your AI agent · '+('Plus active' if bot.get('plus') else 'Standard account')))
+        details=QWidget();details.hide();layout=QVBoxLayout(details);layout.setContentsMargins(0,12,0,0);layout.setSpacing(16);outer.addWidget(row(button('Manage bot',lambda:details.setVisible(not details.isVisible())),button('View profile',lambda:self.app.profile(bot['id'])),button('Write as bot',lambda:self.app.compose(bot=bot),True)));outer.addWidget(details);layout.addWidget(button('Change profile picture',lambda:change_photo(self,bot)))
         for list_name in ('friends','added','mutual'):layout.addWidget(button('View '+list_name,lambda key=list_name:self.app.friends_list(bot['id'],key)))
         self.form('Bot profile','agents/profile',[field('name','Name',max_length=64),field('bio','Bio','multiline',required=False,max_length=300)],extra={'actor':bot['id']},initial=bot,layout=layout)
         self.form('Bot personality','agents/personality',[field('personality','Personality / system instructions','multiline',required=False,max_length=12000)],extra={'actor':bot['id']},initial=bot,layout=layout)
@@ -129,8 +131,7 @@ class DeveloperHub(Page):
 class Settings(Page):
     def __init__(self,app):
         super().__init__(app,'Account settings');me=app.me
-        self.add(button('Change profile picture',lambda:change_photo(self,app.me)))
-        self.add(self.action('Remove profile picture','profile',{'name':me['name'],'bio':me.get('bio',''),'photo':None},after=lambda d:app.update_me(),warning='Remove your current profile picture?'))
+        photo_card=QWidget();photo_card.setObjectName('card');photo_layout=QVBoxLayout(photo_card);photo_layout.setContentsMargins(20,20,20,20);photo_layout.setSpacing(14);photo_layout.addWidget(row(Avatar(self.api,me,56),text(me['name']+'  '+handle(me),True)));photo_layout.addWidget(row(button('Change profile picture',lambda:change_photo(self,app.me)),self.action('Remove picture','profile',{'name':me['name'],'bio':me.get('bio',''),'photo':None},after=lambda d:app.update_me(),warning='Remove your current profile picture?')));self.add(photo_card)
         self.form('Your profile','profile',[field('name','Display name',max_length=64),field('bio','Bio','multiline',required=False,max_length=300)],initial=me,after=lambda d:app.update_me())
         self.form('Friends privacy','profile/privacy',[field('friendsPrivate','Keep my friends lists private','bool',False)],extra={'actor':me['id']},initial=me)
         location=self.section('Optional US location verification');location.addWidget(text('A location check shows presence in the US, not citizenship. Your exact location is not displayed. Sharing is optional.'))

@@ -34,7 +34,7 @@ class Dating(Page):
         if self.current:self.loaders.remove(self.current.reload);self.current.hide();self.current.deleteLater()
         self.current=Listing(self,'dating/profiles?'+urlencode(query),'profiles',self.card,grid=True);self.results.addWidget(self.current)
     def card(self,p):
-        w=QWidget();layout=QVBoxLayout(w)
+        w=QWidget();w.setObjectName('card');layout=QVBoxLayout(w);layout.setContentsMargins(16,16,16,16);layout.setSpacing(12)
         if p.get('photos'):layout.addWidget(Media(self.api,p['photos'][0]))
         layout.addWidget(text(p['name']+', '+str(p['age']),True));layout.addWidget(text(p.get('intent','')+' · '+(p.get('distance') or 'Distance private')));layout.addWidget(button('View Dating profile',lambda:self.app.dating('profile',p['id'])));return w
     def editor(self):

@@ -5,17 +5,24 @@ from urllib.parse import quote
 from html import escape
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QPushButton,QLineEdit,QPlainTextEdit,QCheckBox,QComboBox,QFormLayout,QGroupBox,QDialog,QDialogButtonBox,QScrollArea,QFileDialog,QMessageBox,QApplication,QSlider)
+from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QPushButton,QLineEdit,QPlainTextEdit,QCheckBox,QComboBox,QFormLayout,QGroupBox,QDialog,QDialogButtonBox,QScrollArea,QFileDialog,QMessageBox,QApplication,QSlider,QSizePolicy)
 from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from .api import open_external, ORIGIN
 from shiboken6 import isValid
+from .design import icon
 
 def text(value, title=False):
     label=QLabel(str(value or '')); label.setTextFormat(Qt.TextFormat.PlainText); label.setWordWrap(True)
     label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     if title: label.setObjectName('heading')
     return label
+
+class StatusLabel(QLabel):
+    def __init__(self):
+        super().__init__('');self.setWordWrap(True);self.setTextFormat(Qt.TextFormat.PlainText);self.hide()
+    def setText(self,value):
+        super().setText(str(value));self.setVisible(bool(value))
 
 def button(label, call, primary=False):
     b=QPushButton(label); b.setCursor(Qt.CursorShape.PointingHandCursor); b.clicked.connect(lambda checked=False:call())
@@ -64,7 +71,7 @@ class Form(QGroupBox):
                 widget=QLineEdit(str(value or '')); widget.setMaxLength(f.get('max',2000))
                 if kind=='password': widget.setEchoMode(QLineEdit.EchoMode.Password)
             widget.setAccessibleName(f['label']); self.controls[f['key']]=widget; form.addRow(f['label'],widget)
-        layout.addLayout(form); self.status=text(''); layout.addWidget(self.status); self.send_button=button(submit,self.send,True); layout.addWidget(self.send_button)
+        layout.addLayout(form); self.status=StatusLabel(); layout.addWidget(self.status); self.send_button=button(submit,self.send,True);self.send_button.setMinimumWidth(110); layout.addWidget(self.send_button,0,Qt.AlignmentFlag.AlignRight)
 
     def values(self):
         body=dict(self.extra)
@@ -103,25 +110,28 @@ class Form(QGroupBox):
 class Page(QWidget):
     def __init__(self,app,title):
         super().__init__(); self.app=app; self.api=app.api; self.generation=0; self.loaders=[]; self.active=True
-        root=QVBoxLayout(self); root.addWidget(row(text(title,True),button('Refresh',self.refresh)))
-        self.status=text(''); root.addWidget(self.status); self.scroll=QScrollArea(); self.scroll.setWidgetResizable(True); root.addWidget(self.scroll)
-        self.body=QWidget(); self.content=QVBoxLayout(self.body); self.content.setAlignment(Qt.AlignmentFlag.AlignTop); self.scroll.setWidget(self.body)
+        root=QVBoxLayout(self);root.setContentsMargins(28,26,28,16);root.setSpacing(18)
+        header=QWidget();header_layout=QHBoxLayout(header);header_layout.setContentsMargins(0,0,0,0);heading=QWidget();heading_layout=QVBoxLayout(heading);heading_layout.setContentsMargins(0,0,0,0);heading_layout.setSpacing(5);eyebrow=text('AMERIKA SOCIAL');eyebrow.setObjectName('eyebrow');heading_layout.addWidget(eyebrow);heading_layout.addWidget(text(title,True));header_layout.addWidget(heading);header_layout.addStretch();refresh=button('Refresh',self.refresh);refresh.setIcon(icon('refresh',size=18));refresh.setAccessibleName('Refresh page');header_layout.addWidget(refresh);root.addWidget(header)
+        self.status=StatusLabel();self.status.setObjectName('muted'); root.addWidget(self.status); self.scroll=QScrollArea(); self.scroll.setWidgetResizable(True);self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.scroll.setAlignment(Qt.AlignmentFlag.AlignHCenter); root.addWidget(self.scroll)
+        self.body=QWidget();self.body.setMaximumWidth(920); self.content=QVBoxLayout(self.body);self.content.setContentsMargins(0,0,8,12);self.content.setSpacing(18); self.content.setAlignment(Qt.AlignmentFlag.AlignTop); self.scroll.setWidget(self.body)
     def refresh(self):
         self.generation+=1
         for task in list(self.loaders): task()
     def get(self,path,done,error=None):
         generation=self.generation; self.status.setText('Loading…')
         def ok(data):
-            if not self.active or generation!=self.generation:return
+            if not isValid(self) or not self.active or generation!=self.generation:return
             self.status.setText(''); done(data)
         def err(message):
-            if self.active and generation==self.generation:
+            if isValid(self) and self.active and generation==self.generation:
                 self.status.setText(message)
                 if error:error(message)
         return self.api.request(path,done=ok,error=err)
     def add(self,widget): self.content.addWidget(widget); return widget
-    def section(self,title):
-        group=QGroupBox(title); group.setCheckable(True); group.setChecked(False); outer=QVBoxLayout(group); body=QWidget(); inner=QVBoxLayout(body); outer.addWidget(body); body.hide(); group.toggled.connect(body.setVisible); self.add(group); return inner
+    def section(self,title,initial=False):
+        group=QWidget();group.setObjectName('sectionCard');outer=QVBoxLayout(group);outer.setContentsMargins(0,0,0,0);outer.setSpacing(0);header=QPushButton(title);header.setObjectName('disclosureHeader');header.setCheckable(True);header.setChecked(initial);header.setAccessibleName(title);header.setCursor(Qt.CursorShape.PointingHandCursor);outer.addWidget(header);body=QWidget();inner=QVBoxLayout(body);inner.setContentsMargins(18,4,18,18);inner.setSpacing(16);outer.addWidget(body);body.setVisible(initial)
+        def toggle(value):body.setVisible(value);header.setIcon(icon('chevron-down' if value else 'chevron-right','#c6c6d1',18))
+        header.toggled.connect(toggle);toggle(initial);self.add(group);return inner
     def action(self,label,path,body,after=None,warning=None):
         def run():
             if warning and not confirm(self,label,warning):return
@@ -135,7 +145,7 @@ class Listing(QWidget):
     def __init__(self,page,path,key,render,query_key='cursor',grid=False):
         super().__init__();self.page=page;self.path=path;self.key=key;self.render=render;self.query_key=query_key;self.cursor=None;self.inflight=False;self.epoch=0
         self.grid=grid;self.count=0
-        self.layout=QVBoxLayout(self);self.items=QGridLayout() if grid else QVBoxLayout();self.layout.addLayout(self.items);self.more=button('Load more',lambda:self.load(True));self.layout.addWidget(self.more);self.more.hide();page.loaders.append(self.reload);self.reload()
+        self.layout=QVBoxLayout(self);self.layout.setContentsMargins(0,0,0,0);self.layout.setSpacing(18);self.items=QGridLayout() if grid else QVBoxLayout();self.items.setSpacing(18);self.layout.addLayout(self.items);self.more=button('Load more',lambda:self.load(True));self.layout.addWidget(self.more);self.more.hide();page.loaders.append(self.reload);self.reload()
     def reload(self): self.epoch+=1;self.inflight=False;self.load()
     def load(self,more=False):
         if self.inflight:return
@@ -166,7 +176,10 @@ class Media(QWidget):
             self.slider=QSlider(Qt.Orientation.Horizontal);self.slider.sliderMoved.connect(self.player.setPosition);self.player.positionChanged.connect(self.slider.setValue);self.player.durationChanged.connect(lambda value:self.slider.setRange(0,value));layout.addWidget(self.slider)
             layout.addWidget(row(button('Play / pause',lambda:self.player.pause() if self.player.isPlaying() else self.player.play()),button('Mute / unmute',lambda:self.audio.setMuted(not self.audio.isMuted()))))
         else:
-            self.image=QLabel('Loading photo…');self.image.setAlignment(Qt.AlignmentFlag.AlignCenter);self.image.setMinimumHeight(100);layout.addWidget(self.image);layout.addWidget(button('Open photo',self.zoom));self.pixmap=None;self.load_image()
+            self.image=QLabel('Loading photo…');self.image.setAlignment(Qt.AlignmentFlag.AlignCenter);self.image.setMinimumHeight(100);self.image.setMaximumHeight(320);self.image.setSizePolicy(QSizePolicy.Policy.Ignored,QSizePolicy.Policy.Preferred);layout.addWidget(self.image);layout.addWidget(button('Open photo',self.zoom));self.pixmap=None;self.load_image()
+    def resizeEvent(self,event):
+        super().resizeEvent(event)
+        if getattr(self,'pixmap',None):self.image.setPixmap(self.pixmap.scaled(max(100,self.image.width()),320,Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation))
     def renew(self):
         if not isValid(self):return
         if self.retried or not self.item.get('id') or 'dating/' not in self.url:return

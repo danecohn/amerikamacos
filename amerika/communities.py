@@ -17,7 +17,7 @@ class Communities(Page):
             self.loaders.remove(self.current.reload);self.current.hide();self.current.deleteLater()
         self.current=Listing(self,'communities/list?q='+quote(self.query.text(),safe='')+('&joined=1' if joined else ''),'communities',self.card);self.results.addWidget(self.current)
     def card(self,c):
-        w=QWidget();layout=QVBoxLayout(w);layout.addWidget(text(c['name'],True));layout.addWidget(text(c.get('description','')));layout.addWidget(text(f"c/{c['slug']} · {c.get('members',0)} members · {c.get('posts',0)} posts"));layout.addWidget(button('Open community',lambda:self.app.community(c['id'])));return w
+        w=QWidget();w.setObjectName('card');layout=QVBoxLayout(w);layout.setContentsMargins(22,20,22,20);layout.setSpacing(12);layout.addWidget(text(c['name'],True));layout.addWidget(text(c.get('description','')));meta=text(f"c/{c['slug']} · {c.get('members',0)} members · {c.get('posts',0)} posts");meta.setObjectName('muted');layout.addWidget(meta);layout.addWidget(button('Open community',lambda:self.app.community(c['id'])));return w
     def load_detail(self):
         def done(data):
             c=data['community'];self.group=c

@@ -1,16 +1,17 @@
 from urllib.parse import quote
 import re
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget,QVBoxLayout,QPlainTextEdit,QDialog,QFileDialog,QLineEdit,QComboBox,QLabel,QInputDialog,QApplication,QCheckBox
+from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QPlainTextEdit,QDialog,QFileDialog,QLineEdit,QComboBox,QLabel,QInputDialog,QApplication,QCheckBox,QMenu
 from .widgets import Page,Listing,Media,text,button,row,clear,confirm,field
 from .api import ORIGIN
+from .design import Avatar,action,icon,timestamp,PostText
 
 def handle(actor):return '@'+actor.get('handle','').removesuffix('.pds.amerika.social')
 
 def person(app,actor):
     w=QWidget();layout=QVBoxLayout(w)
     label=actor.get('name','Account')+' '+('✓ ' if actor.get('verified') or actor.get('plus') else '')+handle(actor)
-    layout.addWidget(button(label,lambda:app.profile(actor['id'])))
+    name=button(label,lambda:app.profile(actor['id']));name.setObjectName('authorName');layout.addWidget(row(Avatar(app.api,actor),name))
     if actor.get('bio'):layout.addWidget(text(actor['bio']))
     friendship='Mutual friends' if actor.get('friendship')=='mutual' else 'You added them' if actor.get('following') else 'They added you' if actor.get('followsYou') else 'Not connected yet'
     layout.addWidget(text(friendship))
@@ -22,8 +23,9 @@ class Composer(QDialog):
     def __init__(self,app,parent_post=None,quote_post=None,edit=None,community=None,bot=None):
         super().__init__(app);self.app=app;self.api=app.api;self.bot=bot;self.reply=None;self.media=list((edit or {}).get('media',[]));self.setWindowTitle('Edit post' if edit else 'Reply' if parent_post else 'Quote post' if quote_post else 'Write a post');self.resize(620,620);self.upload_reply=None
         self.parent_post=parent_post;self.quote_post=quote_post;self.edit=edit;layout=QVBoxLayout(self)
+        layout.setContentsMargins(24,24,24,24);layout.setSpacing(16);layout.addWidget(text(self.windowTitle(),True));layout.addWidget(row(Avatar(self.api,bot or app.me),text((bot or app.me)['name']+'  '+handle(bot or app.me))))
         if parent_post or quote_post:layout.addWidget(text((parent_post or quote_post).get('text','')))
-        self.input=QPlainTextEdit((edit or {}).get('text',''));self.input.setAccessibleName('Post text');layout.addWidget(self.input)
+        self.input=QPlainTextEdit((edit or {}).get('text',''));self.input.setPlaceholderText('What’s on your mind?');self.input.setMinimumHeight(180);self.input.setAccessibleName('Post text');layout.addWidget(self.input)
         self.cap=833 if (bot or app.me).get('plus') else 300;self.counter=text('');layout.addWidget(self.counter);self.input.textChanged.connect(self.count);self.count()
         self.destination=QComboBox();self.destination.addItem('Main timeline','');layout.addWidget(self.destination)
         self.api.request('communities/list?joined=1',done=lambda d:self.groups(d,community),error=lambda e:None)
@@ -79,26 +81,34 @@ class Composer(QDialog):
 
 class PostCard(QWidget):
     def __init__(self,page,post,level=0):
-        super().__init__();self.setObjectName('card');app=page.app;layout=QVBoxLayout(self);author=post.get('author',{});uri=post['uri'];me=app.me
-        if post.get('repostBy'):layout.addWidget(text('Reposted by '+handle(post['repostBy'])))
-        layout.addWidget(button(author.get('name','Account')+' '+handle(author)+(' ✓' if author.get('verified') or author.get('plus') else ''),lambda:app.profile(author['id'])))
-        layout.addWidget(text(post.get('created','')))
-        if post.get('community'):layout.addWidget(button('c/'+post['community']['name'],lambda:app.community(post['community']['id'])))
+        super().__init__();self.setObjectName('card');self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground,True);app=page.app;layout=QVBoxLayout(self);layout.setContentsMargins(22,20,22,16);layout.setSpacing(14);author=post.get('author',{});uri=post['uri'];me=app.me
+        if post.get('repostBy'):
+            repost_label=text('Reposted by '+handle(post['repostBy']));repost_label.setObjectName('muted');layout.addWidget(repost_label)
+        header=QWidget();head=QHBoxLayout(header);head.setContentsMargins(0,0,0,0);head.setSpacing(12);head.addWidget(Avatar(app.api,author,44));identity=QWidget();identity_layout=QVBoxLayout(identity);identity_layout.setContentsMargins(0,0,0,0);identity_layout.setSpacing(2)
+        author_name=button(author.get('name','Account'),lambda:app.profile(author['id']));author_name.setObjectName('authorName')
+        if author.get('verified') or author.get('plus'):author_name.setIcon(icon('check','#f65c70',16))
+        identity_layout.addWidget(author_name);meta=text(handle(author)+'  ·  '+('AI agent' if author.get('kind')=='agent' else 'Human'));meta.setObjectName('muted');identity_layout.addWidget(meta);head.addWidget(identity);head.addStretch();time=text(timestamp(post.get('created','')));time.setObjectName('muted');time.setToolTip(post.get('created',''));head.addWidget(time)
+        options=QMenu(self)
+        if me and author.get('id')==me['id']:
+            options.addAction('Edit post',lambda:app.compose(edit=post))
+            def remove():
+                if confirm(self,'Delete post?','Permanently delete this post?'):app.api.request('posts/delete',{'uri':uri},lambda d:page.refresh(),app.error)
+            options.addAction('Delete post',remove)
+        elif me:options.addAction('Report prohibited conduct',lambda:app.report(uri,'post'))
+        if not options.isEmpty():
+            more=action('','more',lambda:None);more.setAccessibleName('Post options');more.setMenu(options);head.addWidget(more)
+        layout.addWidget(header)
+        if post.get('community'):
+            community=button('c/'+post['community']['name'],lambda:app.community(post['community']['id']));community.setObjectName('chip');layout.addWidget(community)
         if post.get('deleted'):layout.addWidget(text('This post was removed.'));return
-        layout.addWidget(text(post.get('text','')))
-        tags=re.findall(r'(?<!\w)#([\w]+)',post.get('text',''),re.UNICODE)
-        if tags:layout.addWidget(row(*[button('#'+tag,lambda t=tag:app.feed('feed?tag='+quote(t,safe=''),'#'+t)) for tag in dict.fromkeys(tags)]))
-        mentions=re.findall(r'(?<!\w)@([a-zA-Z0-9._-]+)',post.get('text',''))
-        if mentions:layout.addWidget(row(*[button('@'+name,lambda n=name:app.find_profile(n)) for name in dict.fromkeys(mentions)]))
+        layout.addWidget(PostText(app,post.get('text','')))
         for item in post.get('media',[]):layout.addWidget(Media(app.api,item))
         if post.get('quote') and level<2:layout.addWidget(PostCard(page,post['quote'],level+1))
-        actions=[button('Thread · '+str(post.get('replies',0)),lambda:app.thread(uri))]
+        def react(path):app.api.request(path,{'uri':uri},lambda d:page.refresh(),app.error)
+        actions=[action(str(post.get('replies',0))+' replies','reply',lambda:app.compose(parent_post=post) if me else app.thread(uri))]
         if me:
-            actions += [button('Reply',lambda:app.compose(parent_post=post)),page.action(('Unlike' if post.get('liked') else 'Like')+' · '+str(post.get('likes',0)),'likes',{'uri':uri}),page.action(('Undo repost' if post.get('reposted') else 'Repost')+' · '+str(post.get('reposts',0)),'reposts',{'uri':uri}),button('Quote',lambda:app.compose(quote_post=post))]
-        layout.addWidget(row(*actions));layout.addWidget(row(button('Copy link',lambda:QApplication.clipboard().setText(ORIGIN+'/post/'+quote(uri,safe=''))),button('Save branded image',lambda:self.save(app,uri))))
-        if me and author.get('id')==me['id']:
-            layout.addWidget(row(button('Edit',lambda:app.compose(edit=post)),page.action('Delete post','posts/delete',{'uri':uri},warning='Permanently delete this post?')))
-        elif me:layout.addWidget(button('Report post',lambda:app.report(uri,'post')))
+            actions += [action(str(post.get('reposts',0))+' reposts','repost',lambda:react('reposts'),post.get('reposted',False)),action(str(post.get('likes',0))+' likes','heart',lambda:react('likes'),post.get('liked',False)),action('Quote','quote',lambda:app.compose(quote_post=post))]
+        share=action('Share','share',lambda:None);share_menu=QMenu(share);share_menu.addAction('Copy post link',lambda:QApplication.clipboard().setText(ORIGIN+'/post/'+quote(uri,safe='')));share_menu.addAction('Save branded post image',lambda:self.save(app,uri));share.setMenu(share_menu);actions.append(share);layout.addWidget(row(*actions));thread_link=button('View conversation  →',lambda:app.thread(uri));thread_link.setObjectName('textLink');layout.addWidget(thread_link)
     def save(self,app,uri):
         path,_=QFileDialog.getSaveFileName(self,'Save branded post','Amerika-post.png','PNG image (*.png)')
         if path:app.api.asset('/share-image?uri='+quote(uri,safe=''),lambda raw:self.write(path,raw,app),app.error)
@@ -113,8 +123,12 @@ class Feed(Page):
     def __init__(self,app,path='feed?',title='The social square'):
         super().__init__(app,title)
         if path=='feed?':
-            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(24,24,24,24);hero_layout.addWidget(text('Why Can’t We Be Friends?',True));hero_layout.addWidget(text('Make friends. Grow stronger together.'));hero_layout.addWidget(text('Free speech. Newest first. No paid boosts.'));self.add(hero)
-            self.add(row(*[button(label,lambda p=query,t=label:app.feed(p,t)) for label,query in [('Everyone','feed?'),('Friends','feed?following=1'),('Agents','feed?kind=agent'),('Humans','feed?kind=human')]]))
+            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(28,28,28,28);hero_layout.setSpacing(12);eyebrow=text('THE SOCIAL SQUARE OF AMERICA');eyebrow.setObjectName('eyebrow');hero_layout.addWidget(eyebrow);headline=text('Why Can’t We\nBe Friends?');headline.setObjectName('heroTitle');headline_row=QWidget();headline_layout=QHBoxLayout(headline_row);headline_layout.setContentsMargins(0,0,0,0);headline_layout.addWidget(headline,1);mark=QLabel();mark.setPixmap(app.windowIcon().pixmap(90,90));mark.setAccessibleName('Amerika red-square A logo');headline_layout.addWidget(mark);hero_layout.addWidget(headline_row);hero_layout.addWidget(text('Make friends. Grow stronger together.'));hero_layout.addWidget(text('Free speech. A fair feed. A place for all of us.'));self.add(hero)
+            composer=QWidget();composer.setObjectName('composeCard');compose_layout=QHBoxLayout(composer);compose_layout.setContentsMargins(18,18,18,18);compose_layout.setSpacing(14);compose_layout.addWidget(Avatar(app.api,app.me or {'name':'Amerika'},42));prompt=button('What’s on your mind?',lambda:app.compose());prompt.setObjectName('composePrompt');compose_layout.addWidget(prompt,1);compose_layout.addWidget(button('+ Post',lambda:app.compose(),True));self.add(composer)
+        tabs=[]
+        for label,query in [('Everyone','feed?'),('Friends','feed?following=1'),('Agents','feed?kind=agent'),('Humans','feed?kind=human')]:
+            tab=button(label,lambda p=query,t=label:app.feed(p,t));tab.setObjectName('feedTab');tab.setProperty('selected',path==query);tabs.append(tab)
+        self.add(row(*tabs))
         self.add(Listing(self,path,'posts',lambda post:PostCard(self,post)))
 
 class Thread(Page):

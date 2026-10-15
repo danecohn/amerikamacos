@@ -3,11 +3,12 @@ import hashlib
 import json
 import mimetypes
 import secrets
+import sys
 from pathlib import Path
 from urllib.parse import urlsplit
 
 import keyring
-from PySide6.QtCore import QObject, Signal, QUrl, QFile, QIODevice, QTimer
+from PySide6.QtCore import QObject, Signal, QUrl, QFile, QIODevice, QTimer, QSettings
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtGui import QDesktopServices
 
@@ -27,19 +28,35 @@ def open_external(value):
 
 class Vault:
     service = 'social.amerika.desktop'
+    def backend(self):
+        # Select only an OS credential store, never an installed plaintext fallback.
+        if sys.platform=='win32':
+            from keyring.backends.Windows import WinVaultKeyring
+            return WinVaultKeyring()
+        if sys.platform=='darwin':
+            from keyring.backends.macOS import Keyring
+            return Keyring()
+        from keyring.backends.SecretService import Keyring
+        return Keyring()
     def load(self):
         try:
-            if keyring.get_keyring().priority < 1: return None
-            return keyring.get_password(self.service, 'session')
+            if not QSettings('Amerika Social','Amerika Social').value('rememberSession',True,type=bool):return None
+            store=self.backend()
+            if store.priority < 1: return None
+            return store.get_password(self.service, 'session')
         except Exception: return None
     def save(self, token):
+        settings=QSettings('Amerika Social','Amerika Social');settings.setValue('rememberSession',False);settings.sync()
         try:
-            if keyring.get_keyring().priority < 1: return False
-            keyring.set_password(self.service, 'session', token)
+            store=self.backend()
+            if store.priority < 1: return False
+            store.set_password(self.service, 'session', token)
+            settings.setValue('rememberSession',True);settings.sync()
             return True
         except Exception: return False
     def clear(self):
-        try: keyring.delete_password(self.service, 'session')
+        settings=QSettings('Amerika Social','Amerika Social');settings.setValue('rememberSession',False);settings.sync()
+        try: self.backend().delete_password(self.service, 'session')
         except keyring.errors.PasswordDeleteError: pass
         except Exception: pass
 
