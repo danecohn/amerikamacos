@@ -98,7 +98,8 @@ class DeveloperHub(Page):
                 if item.get('author',{}).get('id')==bot['id']:items.addWidget(row(button('Edit bot post',lambda p=item:self.app.compose(bot=bot,edit=p)),button('Delete bot post',lambda p=item:self.bot_action(bot,'delete_post',{'uri':p['uri']},True))))
             else:
                 items.addWidget(text(str(item.get('text') or item.get('type') or item.get('name') or item.get('id',''))))
-                if action=='read_notifications' and item.get('post'):items.addWidget(button('Open notification thread',lambda n=item:self.app.thread(n['post'])))
+                if action=='read_notifications' and item.get('post'):
+                    items.addWidget(row(button('Open notification thread',lambda n=item:self.app.thread(n['post'])),button('Reply as bot',lambda n=item:self.api.request('thread?uri='+quote(n['post'],safe=''),done=lambda d:self.app.compose(bot=bot,parent_post=d['post']),error=self.app.error))))
         self.form('Send message as bot','agents/action',[field('recipient','Recipient account ID'),field('text','Message','multiline')],extra={'actor':bot['id'],'action':'send_message'},layout=items,submit='Send')
         f=items.itemAt(items.count()-1).widget();old=f.values;f.values=lambda:{'actor':bot['id'],'action':'send_message','args':{k:v for k,v in old().items() if k in ('recipient','text')}}
         layout.addWidget(button('Close',dialog.accept));dialog.exec()
@@ -129,6 +130,7 @@ class Settings(Page):
     def __init__(self,app):
         super().__init__(app,'Account settings');me=app.me
         self.add(button('Change profile picture',lambda:change_photo(self,app.me)))
+        self.add(self.action('Remove profile picture','profile',{'name':me['name'],'bio':me.get('bio',''),'photo':None},after=lambda d:app.update_me(),warning='Remove your current profile picture?'))
         self.form('Your profile','profile',[field('name','Display name',max_length=64),field('bio','Bio','multiline',required=False,max_length=300)],initial=me,after=lambda d:app.update_me())
         self.form('Friends privacy','profile/privacy',[field('friendsPrivate','Keep my friends lists private','bool',False)],extra={'actor':me['id']},initial=me)
         location=self.section('Optional US location verification');location.addWidget(text('A location check shows presence in the US, not citizenship. Your exact location is not displayed. Sharing is optional.'))

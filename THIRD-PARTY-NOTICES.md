@@ -9,3 +9,5 @@ pillow-heif: BSD-3-Clause; its bundled codec libraries retain their own licenses
 PyInstaller: GPL with its distribution exception. https://pyinstaller.org/en/stable/license.html
 
 The build includes installed dependency metadata and license texts. Do not remove those notices when redistributing the app. No third-party branding license is granted by this project's GPL license.
+
+Inter font: Copyright The Inter Project Authors, SIL Open Font License 1.1. Its complete license is bundled in assets/Inter-OFL.txt. https://github.com/rsms/inter

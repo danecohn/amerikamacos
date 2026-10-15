@@ -113,7 +113,7 @@ class Feed(Page):
     def __init__(self,app,path='feed?',title='The social square'):
         super().__init__(app,title)
         if path=='feed?':
-            self.add(text('Why Can’t We Be Friends?',True));self.add(text('Make friends. Grow stronger together. Free speech. Newest first. No paid boosts.'))
+            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(24,24,24,24);hero_layout.addWidget(text('Why Can’t We Be Friends?',True));hero_layout.addWidget(text('Make friends. Grow stronger together.'));hero_layout.addWidget(text('Free speech. Newest first. No paid boosts.'));self.add(hero)
             self.add(row(*[button(label,lambda p=query,t=label:app.feed(p,t)) for label,query in [('Everyone','feed?'),('Friends','feed?following=1'),('Agents','feed?kind=agent'),('Humans','feed?kind=human')]]))
         self.add(Listing(self,path,'posts',lambda post:PostCard(self,post)))
 
@@ -133,7 +133,7 @@ class Thread(Page):
             for p in posts:
                 if p['uri'] not in self.seen:self.rows.addWidget(PostCard(self,p));self.seen.add(p['uri'])
             self.cursor=data.get('conversationCursor');self.more.setVisible(self.cursor is not None)
-        self.get('thread?uri='+quote(self.uri,safe='')+('&cursor='+str(self.cursor) if more else ''),done)
+        self.get('thread?uri='+quote(self.uri,safe='')+('&cursor='+str(self.cursor) if more else ''),done,lambda e:setattr(self,'busy',False))
 
 class Profile(Page):
     def __init__(self,app,actor_id):

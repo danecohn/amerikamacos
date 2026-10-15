@@ -2,8 +2,8 @@ import sys
 from pathlib import Path
 from urllib.parse import quote
 from PySide6.QtCore import Qt,QTimer,QSettings
-from PySide6.QtGui import QAction,QIcon,QKeySequence
-from PySide6.QtWidgets import QApplication,QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QStackedWidget,QPushButton,QSystemTrayIcon,QStyle,QDialog,QMessageBox
+from PySide6.QtGui import QAction,QIcon,QKeySequence,QFontDatabase,QFont,QPixmap
+from PySide6.QtWidgets import QApplication,QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QStackedWidget,QPushButton,QSystemTrayIcon,QStyle,QDialog,QMessageBox,QLabel
 from .api import Api,BrowserLogin,ORIGIN,open_external
 from .widgets import Page,Listing,text,button,row,field
 from .social import Feed,Thread,Profile,Inbox,Alerts,Explore,Composer,person
@@ -13,9 +13,11 @@ from .dating import Dating
 from .moderation import Moderation
 
 STYLE='''
-QWidget {background:#101012;color:#ffffff;font-size:14px;font-family:"Segoe UI","Helvetica Neue",sans-serif;}
+QWidget {background:#101012;color:#ffffff;font-size:14px;font-family:Inter;}
 QMainWindow {background:#101012;}
 QLabel#heading {font-size:25px;font-weight:700;}
+QWidget#hero,QWidget#hero QLabel {background:#c82433;color:#ffffff;}
+QWidget#hero {border-radius:8px;}
 QPushButton {background:#202024;border:1px solid #4b4b50;border-radius:6px;padding:10px 14px;text-align:left;}
 QPushButton:hover {background:#36363b;border-color:#ffffff;}
 QPushButton:pressed {background:#4b4b50;}
@@ -39,8 +41,15 @@ def asset_path(name):return Path(getattr(sys,'_MEIPASS',Path(__file__).resolve()
 class MainWindow(QMainWindow):
     def __init__(self,api=None):
         super().__init__();self.api=api or Api(parent=self);self.me=None;self.page=None;self.history=[];self.seen_alert=0;self.polling=False
+        application=QApplication.instance()
+        if not application.property('amerikaFontLoaded'):
+            font_id=QFontDatabase.addApplicationFont(str(asset_path('Inter.ttf')))
+            if font_id>=0:application.setFont(QFont(QFontDatabase.applicationFontFamilies(font_id)[0],11))
+            application.setProperty('amerikaFontLoaded',True)
         self.setWindowTitle('Amerika Social');self.resize(1260,850);self.setMinimumSize(900,600);self.setWindowIcon(QIcon(str(asset_path('logo.png'))));self.setStyleSheet(STYLE)
-        central=QWidget();self.setCentralWidget(central);layout=QHBoxLayout(central);sidebar=QWidget();sidebar.setFixedWidth(225);nav=QVBoxLayout(sidebar);layout.addWidget(sidebar);nav.addWidget(text('A  Amerika',True));nav.addWidget(text('Why Can’t We Be Friends?'));self.identity=text('Browsing as a guest');nav.addWidget(self.identity)
+        central=QWidget();self.setCentralWidget(central);layout=QHBoxLayout(central);sidebar=QWidget();sidebar.setFixedWidth(225);nav=QVBoxLayout(sidebar);layout.addWidget(sidebar)
+        logo=QLabel();logo.setPixmap(QPixmap(str(asset_path('logo.png'))).scaled(36,36,Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation));logo.setAccessibleName('Amerika Social logo');nav.addWidget(row(logo,text('Amerika',True)))
+        nav.addWidget(text('Why Can’t We Be Friends?'));self.identity=text('Browsing as a guest');nav.addWidget(self.identity)
         for title,call in [('Home',lambda:self.feed()),('My profile',lambda:self.profile(self.me['id']) if self.require_login() else None),('Friends',self.friends),('Discover & hashtags',self.explore),('Messages',self.inbox),('Notifications',self.alerts),('Amerika Communities',self.communities),('Amerika Dating',self.dating),('Developer hub',self.developers),('Account settings',self.settings),('Amerika Social Plus',self.plus)]:nav.addWidget(button(title,call))
         self.mod_button=button('Moderation',self.moderation);nav.addWidget(self.mod_button);self.mod_button.hide();nav.addWidget(button('+ Write a post',self.compose,True));nav.addStretch();self.auth_button=button('Sign in / register',self.signin);nav.addWidget(self.auth_button)
         self.pages=QStackedWidget();layout.addWidget(self.pages,1);self.login=BrowserLogin(self.api,self);self.login.connected.connect(self.authenticated);self.login.failed.connect(self.error);self.api.expired.connect(self.session_expired)
@@ -155,6 +164,8 @@ class MainWindow(QMainWindow):
 
 def main():
     app=QApplication(sys.argv);app.setOrganizationName('Amerika Social');app.setApplicationName('Amerika Social');app.setApplicationVersion('1.0.0')
+    font_id=QFontDatabase.addApplicationFont(str(asset_path('Inter.ttf')))
+    if font_id>=0:app.setFont(QFont(QFontDatabase.applicationFontFamilies(font_id)[0],11))
     smoke='--smoke-test' in sys.argv
     window=MainWindow(Api(restore=False) if smoke else None);window.show()
     if smoke:

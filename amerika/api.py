@@ -8,14 +8,14 @@ from urllib.parse import urlsplit
 
 import keyring
 from PySide6.QtCore import QObject, Signal, QUrl, QFile, QIODevice, QTimer
-from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
+from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtGui import QDesktopServices
 
 ORIGIN = 'https://www.amerika.social'
 MAX_UPLOAD = 250_000_000
 
 def media_mime(path):
-    return {'.mov':'video/quicktime','.heic':'image/heic','.heif':'image/heif','.m4v':'video/x-m4v'}.get(Path(path).suffix.lower(), mimetypes.guess_type(path)[0] or 'application/octet-stream')
+    return {'.mov':'video/quicktime','.heic':'image/heic','.heif':'image/heif','.m4v':'video/mp4'}.get(Path(path).suffix.lower(), mimetypes.guess_type(path)[0] or 'application/octet-stream')
 
 def safe_url(value):
     parsed = urlsplit(value)
@@ -116,7 +116,7 @@ class Api(QObject):
         def finish():
             try:
                 if epoch != self.epoch: return
-                if reply.error():
+                if reply.error() != QNetworkReply.NetworkError.NoError:
                     if error: error('Media could not be loaded.')
                 else: done(bytes(reply.readAll()))
             finally: reply.deleteLater()

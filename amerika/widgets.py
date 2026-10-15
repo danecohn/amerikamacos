@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabe
 from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from .api import open_external, ORIGIN
+from shiboken6 import isValid
 
 def text(value, title=False):
     label=QLabel(str(value or '')); label.setTextFormat(Qt.TextFormat.PlainText); label.setWordWrap(True)
@@ -48,7 +49,7 @@ def field(key,label=None,kind='text',default='',options=None,required=True,max_l
 class Form(QGroupBox):
     def __init__(self,title,api,path,fields,extra=None,after=None,initial=None,submit='Save',parent=None):
         super().__init__(title,parent); self.api=api; self.path=path; self.fields=fields; self.extra=extra or {}; self.after=after; self.controls={}
-        layout=QVBoxLayout(self); form=QFormLayout(); form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
+        layout=QVBoxLayout(self); form=QFormLayout(); form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow);form.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
         for f in fields:
             value=(initial or {}).get(f['key'],f.get('default','')); kind=f.get('kind','text')
             if kind=='bool': widget=QCheckBox(); widget.setChecked(bool(value))
@@ -141,7 +142,7 @@ class Listing(QWidget):
         self.inflight=True;epoch=self.epoch;self.more.setEnabled(False)
         path=self.path+(('&' if '?' in self.path else '?')+self.query_key+'='+quote(str(self.cursor),safe='') if more else '')
         def done(data):
-            if epoch!=self.epoch:return
+            if not isValid(self) or epoch!=self.epoch:return
             self.inflight=False;self.more.setEnabled(True)
             if not more:clear(self.items);self.count=0
             rows=data.get(self.key,[])
@@ -152,7 +153,9 @@ class Listing(QWidget):
                 self.count+=1
             if not rows and not more:self.items.addWidget(text('Nothing here yet.'))
             self.cursor=data.get('cursor');self.more.setVisible(self.cursor is not None)
-        self.page.get(path,done,lambda message:(setattr(self,'inflight',False),self.more.setEnabled(True)))
+        def failed(message):
+            if isValid(self):self.inflight=False;self.more.setEnabled(True)
+        self.page.get(path,done,failed)
 
 class Media(QWidget):
     def __init__(self,api,item,parent=None):
@@ -165,6 +168,7 @@ class Media(QWidget):
         else:
             self.image=QLabel('Loading photo…');self.image.setAlignment(Qt.AlignmentFlag.AlignCenter);self.image.setMinimumHeight(100);layout.addWidget(self.image);layout.addWidget(button('Open photo',self.zoom));self.pixmap=None;self.load_image()
     def renew(self):
+        if not isValid(self):return
         if self.retried or not self.item.get('id') or 'dating/' not in self.url:return
         self.retried=True
         def done(data):
