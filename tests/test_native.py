@@ -64,3 +64,7 @@ def test_bundled_font_can_render_the_brand(window):
 def test_refresh_button_and_menu_shortcuts_reload_native_data(window,qtbot):
     from PySide6.QtGui import QAction,QKeySequence
     w,api=window;before=len([p for p,b in api.calls if p.startswith('feed')]);refresh=next(a for a in w.findChildren(QAction) if a.text()=='Refresh');keys=[k.toString(QKeySequence.SequenceFormat.PortableText) for k in refresh.shortcuts()];assert 'F5' in keys;assert 'Ctrl+R' in keys;refresh.trigger();qtbot.wait(30);assert len([p for p,b in api.calls if p.startswith('feed')])>before;assert any(p=='me' for p,b in api.calls)
+
+def test_actual_logo_paints_red_square_and_white_a(qtbot):
+    from amerika.design import LogoMark
+    logo=LogoMark(64);qtbot.addWidget(logo);logo.show();qtbot.wait(20);image=logo.grab().toImage();assert image.pixelColor(2,2).name()=='#c82433';assert image.pixelColor(32,18).name()=='#ffffff'

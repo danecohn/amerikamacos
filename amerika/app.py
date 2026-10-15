@@ -11,7 +11,7 @@ from .hub import Settings,DeveloperHub,Plus
 from .communities import Communities
 from .dating import Dating
 from .moderation import Moderation
-from .design import icon
+from .design import icon,LogoMark
 
 STYLE='''
 QWidget {background:transparent;color:#f7f7fa;font-size:14px;font-family:Inter;}
@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
             application.setProperty('amerikaFontLoaded',True)
         self.setWindowTitle('Amerika Social');self.resize(1320,940);self.setMinimumSize(980,680);self.setWindowIcon(QIcon(str(asset_path('logo.png'))));check_path=str(asset_path('check.svg')).replace('\\','/');self.setStyleSheet(STYLE+f'QCheckBox::indicator:checked {{image:url("{check_path}");}}')
         central=QWidget();central.setObjectName('appShell');self.setCentralWidget(central);layout=QHBoxLayout(central);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0);sidebar=QWidget();sidebar.setObjectName('sidebar');sidebar.setFixedWidth(248);nav=QVBoxLayout(sidebar);nav.setContentsMargins(20,28,20,22);nav.setSpacing(12);layout.addWidget(sidebar)
-        logo=QLabel();logo.setPixmap(QPixmap(str(asset_path('logo.png'))).scaled(44,44,Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation));logo.setAccessibleName('Amerika Social logo');wordmark=text('amerika.',True);wordmark.setStyleSheet('font-size:27px;font-weight:750;');nav.addWidget(row(logo,wordmark))
+        logo=LogoMark(44);wordmark=text('amerika.',True);wordmark.setStyleSheet('font-size:27px;font-weight:750;');nav.addWidget(row(logo,wordmark))
         tagline=text('WHY CAN’T WE BE FRIENDS?');tagline.setObjectName('eyebrow');nav.addWidget(tagline);nav.addSpacing(10)
         nav_scroll=QScrollArea();nav_scroll.setWidgetResizable(True);nav_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);nav_body=QWidget();links=QVBoxLayout(nav_body);links.setContentsMargins(0,0,0,0);links.setSpacing(5);nav_scroll.setWidget(nav_body);nav.addWidget(nav_scroll,1);self.nav_buttons={}
         groups=[('YOUR SQUARE',[('Home','home',lambda:self.feed()),('My profile','profile',lambda:self.profile(self.me['id']) if self.require_login() else None),('Friends','friends',self.friends),('Discover','search',self.explore),('Messages','messages',self.inbox),('Notifications','bell',self.alerts)]),('FIND YOUR PEOPLE',[('Communities','communities',self.communities),('Dating','heart',self.dating)]),('YOUR ACCOUNT',[('Developer hub','code',self.developers),('Settings','settings',self.settings),('Amerika Plus','star',self.plus)])]

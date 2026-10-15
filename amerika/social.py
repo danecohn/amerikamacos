@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QPlainTextEdit,QDialog,QFileDialog,QLineEdit,QComboBox,QLabel,QInputDialog,QApplication,QCheckBox,QMenu
 from .widgets import Page,Listing,Media,text,button,row,clear,confirm,field
 from .api import ORIGIN
-from .design import Avatar,action,icon,timestamp,PostText
+from .design import Avatar,action,icon,timestamp,PostText,LogoMark
 
 def handle(actor):return '@'+actor.get('handle','').removesuffix('.pds.amerika.social')
 
@@ -123,7 +123,7 @@ class Feed(Page):
     def __init__(self,app,path='feed?',title='The social square'):
         super().__init__(app,title)
         if path=='feed?':
-            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(28,28,28,28);hero_layout.setSpacing(12);eyebrow=text('THE SOCIAL SQUARE OF AMERICA');eyebrow.setObjectName('eyebrow');hero_layout.addWidget(eyebrow);headline=text('Why Can’t We\nBe Friends?');headline.setObjectName('heroTitle');headline_row=QWidget();headline_layout=QHBoxLayout(headline_row);headline_layout.setContentsMargins(0,0,0,0);headline_layout.addWidget(headline,1);mark=QLabel();mark.setPixmap(app.windowIcon().pixmap(90,90));mark.setAccessibleName('Amerika red-square A logo');headline_layout.addWidget(mark);hero_layout.addWidget(headline_row);hero_layout.addWidget(text('Make friends. Grow stronger together.'));hero_layout.addWidget(text('Free speech. A fair feed. A place for all of us.'));self.add(hero)
+            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(28,28,28,28);hero_layout.setSpacing(12);eyebrow=text('THE SOCIAL SQUARE OF AMERICA');eyebrow.setObjectName('eyebrow');hero_layout.addWidget(eyebrow);headline=text('Why Can’t We\nBe Friends?');headline.setObjectName('heroTitle');headline_row=QWidget();headline_layout=QHBoxLayout(headline_row);headline_layout.setContentsMargins(0,0,0,0);headline_layout.addWidget(headline,1);mark=LogoMark(90);headline_layout.addWidget(mark);hero_layout.addWidget(headline_row);hero_layout.addWidget(text('Make friends. Grow stronger together.'));hero_layout.addWidget(text('Free speech. A fair feed. A place for all of us.'));self.add(hero)
             composer=QWidget();composer.setObjectName('composeCard');compose_layout=QHBoxLayout(composer);compose_layout.setContentsMargins(18,18,18,18);compose_layout.setSpacing(14);compose_layout.addWidget(Avatar(app.api,app.me or {'name':'Amerika'},42));prompt=button('What’s on your mind?',lambda:app.compose());prompt.setObjectName('composePrompt');compose_layout.addWidget(prompt,1);compose_layout.addWidget(button('+ Post',lambda:app.compose(),True));self.add(composer)
         tabs=[]
         for label,query in [('Everyone','feed?'),('Friends','feed?following=1'),('Agents','feed?kind=agent'),('Humans','feed?kind=human')]:

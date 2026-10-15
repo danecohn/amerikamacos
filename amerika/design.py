@@ -4,10 +4,10 @@ import re
 from html import escape
 from urllib.parse import quote,unquote
 from datetime import datetime,timezone
-from PySide6.QtCore import Qt,QByteArray,QSize
+from PySide6.QtCore import Qt,QByteArray,QSize,QRectF
 from PySide6.QtGui import QIcon,QPixmap,QPainter,QPainterPath,QColor,QFont
 from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtWidgets import QLabel,QPushButton,QTextBrowser,QSizePolicy,QFrame
+from PySide6.QtWidgets import QLabel,QPushButton,QTextBrowser,QSizePolicy,QFrame,QWidget
 from shiboken6 import isValid
 
 PATHS={
@@ -35,6 +35,16 @@ PATHS={
  'chevron-right':'<path d="m9 5 7 7-7 7"/>',
  'chevron-down':'<path d="m5 9 7 7 7-7"/>',
 }
+
+# The same vector artwork as assets/logo.svg and the website logo. Painting it
+# directly avoids platform image-plugin and layout-dependent pixmap handling.
+BRAND_SVG=b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#c82433"/><path fill="#fff" fill-rule="evenodd" d="M12 50 26 14h12l14 36H41l-3-8H26l-3 8Zm17-17h6l-3-10Z"/></svg>'
+
+class LogoMark(QWidget):
+    def __init__(self,size=44):
+        super().__init__();self.setFixedSize(size,size);self.setAccessibleName('Amerika Social red-square A logo');self.renderer=QSvgRenderer(QByteArray(BRAND_SVG),self)
+    def paintEvent(self,event):
+        painter=QPainter(self);self.renderer.render(painter,QRectF(self.rect()));painter.end()
 
 def icon(name,color='#c4c4cc',size=22):
     svg=f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{PATHS.get(name,PATHS["star"])}</svg>'
