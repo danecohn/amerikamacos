@@ -21,10 +21,10 @@ QLabel#heading {font-size:25px;font-weight:700;}
 QLabel#muted {color:#5b7184;font-size:12px;}
 QLabel#eyebrow {font-size:10px;font-weight:600;letter-spacing:1px;color:#50687b;}
 QLabel#postText {font-size:15px;color:#263e52;}
-QWidget#hero {background:#ff0058;border-radius:12px;}
-QWidget#hero QLabel {color:white;}
+QWidget#hero {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fafcfd,stop:1 #d7e2eb);border:1px solid #b6c6d3;border-radius:12px;}
+QWidget#hero QLabel {color:#263e52;}
 QWidget#hero QLabel#heroTitle {font-size:37px;font-weight:700;letter-spacing:-1px;}
-QWidget#hero QLabel#eyebrow {color:#53001d;font-size:10px;}
+QWidget#hero QLabel#eyebrow {color:#bd0041;font-size:10px;}
 QWidget#card {background:#f8fafc;border:1px solid #bdcbd7;border-radius:12px;}
 QWidget#composeCard {background:#f8fafc;border:1px solid #b8c7d4;border-radius:12px;}
 QWidget#sectionCard {background:#f8fafc;border:1px solid #b8c7d4;border-radius:10px;}
@@ -100,7 +100,7 @@ class MainWindow(QMainWindow):
         if QSystemTrayIcon.isSystemTrayAvailable():self.tray.show();self.tray.messageClicked.connect(self.alerts)
         self.build_menu();self.feed();self.api.request('me',done=self.restore,error=self.error)
     def build_menu(self):
-        appmenu=self.menuBar().addMenu('Amerika');view=self.menuBar().addMenu('View');help_menu=self.menuBar().addMenu('Help')
+        appmenu=self.menuBar().addMenu('Makk Social');view=self.menuBar().addMenu('View');help_menu=self.menuBar().addMenu('Help')
         for menu,label,shortcut,call in [(appmenu,'Write a post','Ctrl+N',self.compose),(appmenu,'Sign in','',self.signin),(appmenu,'Sign out','',self.signout),(appmenu,'Quit',QKeySequence.StandardKey.Quit,self.close),(view,'Back','Alt+Left',self.back),(view,'Refresh',QKeySequence.StandardKey.Refresh,self.refresh),(view,'Search','Ctrl+K',self.explore)]:
             action=QAction(label,self)
             if label=='Refresh':

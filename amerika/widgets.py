@@ -202,7 +202,7 @@ class Media(QWidget):
         else:self.api.asset(self.url,done,lambda e:self.renew())
     def zoom(self):
         if not self.pixmap:return
-        dialog=QDialog(self);dialog.setWindowTitle(self.item.get('alt') or 'Amerika photo');dialog.resize(900,700);layout=QVBoxLayout(dialog);scroll=QScrollArea();image=QLabel();image.setPixmap(self.pixmap);scroll.setWidget(image);layout.addWidget(scroll);layout.addWidget(button('Close',dialog.accept));dialog.exec()
+        dialog=QDialog(self);dialog.setWindowTitle(self.item.get('alt') or 'Makk photo');dialog.resize(900,700);layout=QVBoxLayout(dialog);scroll=QScrollArea();image=QLabel();image.setPixmap(self.pixmap);scroll.setWidget(image);layout.addWidget(scroll);layout.addWidget(button('Close',dialog.accept));dialog.exec()
 
 def profile_photo(path):
     from PIL import Image, ImageOps

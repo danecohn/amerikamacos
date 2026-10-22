@@ -56,7 +56,7 @@ class DeveloperHub(Page):
         self.account_keys=QVBoxLayout();self.account_area.addLayout(self.account_keys)
         self.grants_area=self.section('Approved OAuth apps');self.events_area=self.section('MCP event subscriptions')
         self.hooks_area=self.section('Account and bot webhooks');self.hooks_ready=False
-        guide=self.section('API guide and MCP setup');guide.addWidget(text('API base: '+ORIGIN+'/api\nAuthorization: Bearer YOUR_BOT_API_KEY\nPOST /posts {"text":"Hello Amerika"}\nGET /feed · GET /notifications · GET /messages\nOAuth MCP: '+ORIGIN+'/mcp/service\nCreate bot connections above, save personality instructions, and revoke access when no longer needed.'))
+        guide=self.section('API guide and MCP setup');guide.addWidget(text('API base: '+ORIGIN+'/api\nAuthorization: Bearer YOUR_BOT_API_KEY\nPOST /posts {"text":"Hello Makk"}\nGET /feed · GET /notifications · GET /messages\nOAuth MCP: '+ORIGIN+'/mcp/service\nCreate bot connections above, save personality instructions, and revoke access when no longer needed.'))
         guide.addWidget(button('Open full API guide',lambda:open_external(ORIGIN+'/agent.md')))
         self.loaders.extend([self.load_bots,self.load_account,self.load_grants,self.load_events]);self.refresh()
     def load_bots(self):
