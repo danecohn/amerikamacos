@@ -14,64 +14,66 @@ from .moderation import Moderation
 from .design import icon,LogoMark
 
 STYLE='''
-QWidget {background:transparent;color:#f7f7fa;font-size:14px;font-family:Inter;}
-QMainWindow,QWidget#appShell {background:#0e0e10;}
-QWidget#sidebar {background:#141417;border-right:1px solid #29292f;}
+QWidget {background:transparent;color:#263e52;font-size:14px;font-family:Inter;}
+QMainWindow,QWidget#appShell {background:#e5edf4;}
+QWidget#sidebar {background:#e7edf3;border-right:1px solid #bdcbd7;}
 QLabel#heading {font-size:25px;font-weight:700;}
-QLabel#muted {color:#90909c;font-size:12px;}
-QLabel#eyebrow {font-size:10px;font-weight:600;letter-spacing:1px;color:#b4b4bf;}
-QLabel#postText {font-size:15px;color:#eeeeF3;}
-QWidget#hero {background:#c82433;border-radius:12px;}
+QLabel#muted {color:#5b7184;font-size:12px;}
+QLabel#eyebrow {font-size:10px;font-weight:600;letter-spacing:1px;color:#50687b;}
+QLabel#postText {font-size:15px;color:#263e52;}
+QWidget#hero {background:#ff0058;border-radius:12px;}
 QWidget#hero QLabel {color:white;}
 QWidget#hero QLabel#heroTitle {font-size:37px;font-weight:700;letter-spacing:-1px;}
-QWidget#hero QLabel#eyebrow {color:#ffe4e7;font-size:10px;}
-QWidget#card {background:#17171b;border:1px solid #29292f;border-radius:12px;}
-QWidget#composeCard {background:#17171b;border:1px solid #303037;border-radius:12px;}
-QWidget#sectionCard {background:#17171b;border:1px solid #303037;border-radius:10px;}
-QPushButton#disclosureHeader {background:transparent;border:0;border-radius:10px;padding:18px;color:#e7e7ef;font-size:14px;font-weight:600;text-align:left;}
-QPushButton#disclosureHeader:hover {background:#222228;}
-QPushButton {background:#24242a;border:1px solid #414149;border-radius:7px;padding:10px 15px;text-align:left;font-weight:500;}
-QPushButton:hover {background:#303037;border-color:#777781;}
-QPushButton:pressed {background:#393940;}
-QPushButton:disabled {color:#666670;background:#18181d;}
-QPushButton#primary {background:#c82433;border-color:#c82433;color:white;font-weight:600;}
-QPushButton#primary:hover {background:#e02e40;}
-QPushButton#nav {background:transparent;border:1px solid transparent;padding:10px 15px;border-radius:8px;color:#c5c5ce;text-align:left;}
-QPushButton#nav:hover {background:#222228;color:white;}
-QPushButton#nav[selected="true"] {background:#351b22;border-color:#351b22;color:#ff7c89;font-weight:600;}
-QPushButton#authorName {background:transparent;border:0;padding:0;text-align:left;color:#f8f8fb;font-weight:650;font-size:14px;}
-QPushButton#authorName:hover {color:#ff7c89;}
-QPushButton#postAction {background:transparent;border:0;padding:7px 10px;color:#aaaab5;font-size:12px;font-weight:400;}
-QPushButton#postAction:hover {background:#2d1c24;color:#ff7c89;}
-QPushButton#postAction[active="true"] {color:#ff7c89;}
-QPushButton#textLink {background:transparent;border:0;padding:0;text-align:left;color:#9b9ba7;font-size:12px;}
-QPushButton#textLink:hover {color:#ff7c89;}
-QPushButton#chip {background:#292027;border:1px solid #49303b;border-radius:12px;padding:4px 9px;color:#ffb1ba;font-size:11px;}
-QPushButton#composePrompt {background:transparent;border:0;color:#92929e;font-size:15px;padding:8px 0;}
-QPushButton#feedTab {background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:13px 18px;color:#9797a4;}
-QPushButton#feedTab[selected="true"] {border-bottom:2px solid #eb3a4d;color:#ffffff;font-weight:650;}
-QLineEdit,QPlainTextEdit,QComboBox {background:#1b1b20;border:1px solid #41414a;border-radius:7px;padding:10px;selection-background-color:#c82433;}
+QWidget#hero QLabel#eyebrow {color:#53001d;font-size:10px;}
+QWidget#card {background:#f8fafc;border:1px solid #bdcbd7;border-radius:12px;}
+QWidget#composeCard {background:#f8fafc;border:1px solid #b8c7d4;border-radius:12px;}
+QWidget#sectionCard {background:#f8fafc;border:1px solid #b8c7d4;border-radius:10px;}
+QPushButton#disclosureHeader {background:transparent;border:0;border-radius:10px;padding:18px;color:#263e52;font-size:14px;font-weight:600;text-align:left;}
+QPushButton#disclosureHeader:hover {background:#e1e9f0;}
+QPushButton {background:#edf2f7;border:1px solid #a8b8c7;border-radius:7px;padding:10px 15px;text-align:left;font-weight:500;}
+QPushButton:hover {background:#b8c7d4;border-color:#899eaf;}
+QPushButton:pressed {background:#d4e0ea;}
+QPushButton:disabled {color:#666670;background:#e5ebf1;}
+QPushButton#primary {background:#ff0058;border-color:#ff0058;color:white;font-weight:600;}
+QPushButton#primary:hover {background:#ff367b;}
+QPushButton#nav {background:transparent;border:1px solid transparent;padding:10px 15px;border-radius:8px;color:#486176;text-align:left;}
+QPushButton#nav:hover {background:#e1e9f0;color:white;}
+QPushButton#nav[selected="true"] {background:#ffe1ec;border-color:#ffe1ec;color:#a8003a;font-weight:600;}
+QPushButton#authorName {background:transparent;border:0;padding:0;text-align:left;color:#263e52;font-weight:650;font-size:14px;}
+QPushButton#authorName:hover {color:#a8003a;}
+QPushButton#postAction {background:transparent;border:0;padding:7px 10px;color:#5e7387;font-size:12px;font-weight:400;}
+QPushButton#postAction:hover {background:#f9e8ef;color:#a8003a;}
+QPushButton#postAction[active="true"] {color:#a8003a;}
+QPushButton#textLink {background:transparent;border:0;padding:0;text-align:left;color:#5e7387;font-size:12px;}
+QPushButton#textLink:hover {color:#a8003a;}
+QPushButton#chip {background:#e6edf4;border:1px solid #d8a3b5;border-radius:12px;padding:4px 9px;color:#9d0036;font-size:11px;}
+QPushButton#composePrompt {background:transparent;border:0;color:#5e7387;font-size:15px;padding:8px 0;}
+QPushButton#feedTab {background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:13px 18px;color:#5e7387;}
+QPushButton#feedTab[selected="true"] {border-bottom:2px solid #b0003d;color:#263e52;font-weight:650;}
+QLineEdit,QPlainTextEdit,QComboBox {background:#1b1b20;border:1px solid #a8b8c7;border-radius:7px;padding:10px;selection-background-color:#ff0058;}
 QLineEdit:focus,QPlainTextEdit:focus,QComboBox:focus {border:1px solid #e65b69;}
 QPushButton:focus {border:1px solid #888894;}
 QScrollArea {border:0;background:transparent;}
 QScrollBar:vertical {background:transparent;width:8px;margin:2px;}
-QScrollBar::handle:vertical {background:#41414a;border-radius:3px;min-height:40px;}
+QScrollBar::handle:vertical {background:#a8b8c7;border-radius:3px;min-height:40px;}
 QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {height:0;}
 QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:transparent;}
-QGroupBox {background:#17171b;border:1px solid #33333c;border-radius:10px;margin-top:22px;padding:18px;font-weight:600;}
+QGroupBox {background:#f8fafc;border:1px solid #33333c;border-radius:10px;margin-top:22px;padding:18px;font-weight:600;}
 QGroupBox::title {subcontrol-origin:margin;left:14px;padding:0 6px;}
 QCheckBox {spacing:9px;padding:6px;}
 QCheckBox::indicator {width:18px;height:18px;background:#111116;border:1px solid #666672;border-radius:4px;}
-QCheckBox::indicator:checked {background:#c82433;border-color:#c82433;}
-QDialog,QMenu {background:#17171b;}
+QCheckBox::indicator:checked {background:#ff0058;border-color:#ff0058;}
+QDialog,QMenu {background:#f8fafc;}
 QMenu {border:1px solid #44444e;padding:6px;}
 QMenu::item {padding:9px 20px;border-radius:5px;}
 QMenu::item:selected {background:#40232b;}
-QMenuBar,QStatusBar {background:#141417;color:#a8a8b4;}
-QMenuBar::item:selected {background:#303037;}
+QMenuBar,QStatusBar {background:#e7edf3;color:#a8a8b4;}
+QMenuBar::item:selected {background:#b8c7d4;}
 '''
 
 def asset_path(name):return Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parent.parent))/'assets'/name
+
+STYLE += '\nQMainWindow::separator {background:#aabcc9;}\nQWidget#sidebar {background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #e4ebf2,stop:1 #d1dde8);border-right:1px solid #adbdcc;}\nQMenuBar {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #ffffff,stop:1 #d7e1e9);color:#263e52;border-bottom:1px solid #afbdca;}\nQMenuBar::item:selected,QMenu::item:selected {background:#ffe1ec;color:#9d0036;}\nQMenu {background:#f8fafc;color:#263e52;border:1px solid #a8b9c7;}\nQWidget#card,QWidget#composeCard,QWidget#sectionCard {background:#ffffff;border:1px solid #becdd9;border-radius:8px;}\nQPushButton {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fff,stop:1 #dce5ee);color:#2c455a;border:1px solid #acbdcb;border-radius:6px;padding:9px 14px;}\nQPushButton#primary {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #ff8db4,stop:1 #ff0058);color:#26000d;border-color:#c90045;font-weight:700;}\nQPushButton:focus,QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus {border:2px solid #ff0058;}\nQLineEdit,QTextEdit,QPlainTextEdit,QComboBox {background:#fff;color:#263e52;border:1px solid #afbfcd;border-radius:6px;padding:8px;selection-background-color:#ffb5ce;selection-color:#26000d;}\nQPushButton#threadClose,QPushButton#threadMinimize,QPushButton#threadMaximize {border-radius:12px;padding:0;font-size:18px;font-weight:700;min-height:24px;max-height:24px;min-width:24px;max-width:24px;}\nQPushButton#threadClose {background:qradialgradient(cx:.4,cy:.2,radius:.9,stop:0 #ffd4ca,stop:.5 #ed796d,stop:1 #be4036);border:1px solid #a43f36;color:#661a15;}\nQPushButton#threadMinimize {background:qradialgradient(cx:.4,cy:.2,radius:.9,stop:0 #fff3c0,stop:.5 #f0cb61,stop:1 #c9a33e);border:1px solid #ad8a32;color:#63501d;}\nQPushButton#threadMaximize {background:qradialgradient(cx:.4,cy:.2,radius:.9,stop:0 #e5ffc5,stop:.5 #a2d46e,stop:1 #6ba742);border:1px solid #6b9641;color:#344e1e;}\nQWidget#threadChrome {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fff,stop:1 #d5e0e9);border-bottom:1px solid #b0c0cd;border-radius:7px;padding:6px;}\nQToolTip {background:#fff4f8;color:#293f53;border:1px solid #c4a8b3;}\n'
 
 class MainWindow(QMainWindow):
     def __init__(self,api=None):
@@ -81,12 +83,12 @@ class MainWindow(QMainWindow):
             font_id=QFontDatabase.addApplicationFont(str(asset_path('Inter.ttf')))
             if font_id>=0:application.setFont(QFont(QFontDatabase.applicationFontFamilies(font_id)[0],11))
             application.setProperty('amerikaFontLoaded',True)
-        self.setWindowTitle('Amerika Social');self.resize(1320,940);self.setMinimumSize(980,680);self.setWindowIcon(QIcon(str(asset_path('logo.png'))));check_path=str(asset_path('check.svg')).replace('\\','/');self.setStyleSheet(STYLE+f'QCheckBox::indicator:checked {{image:url("{check_path}");}}')
+        self.setWindowTitle('Makk Social');self.resize(1320,940);self.setMinimumSize(980,680);self.setWindowIcon(QIcon(str(asset_path('logo.png'))));check_path=str(asset_path('check.svg')).replace('\\','/');self.setStyleSheet(STYLE+f'QCheckBox::indicator:checked {{image:url("{check_path}");}}')
         central=QWidget();central.setObjectName('appShell');self.setCentralWidget(central);layout=QHBoxLayout(central);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0);sidebar=QWidget();sidebar.setObjectName('sidebar');sidebar.setFixedWidth(248);nav=QVBoxLayout(sidebar);nav.setContentsMargins(20,28,20,22);nav.setSpacing(12);layout.addWidget(sidebar)
-        logo=LogoMark(44);wordmark=text('amerika.',True);wordmark.setStyleSheet('font-size:27px;font-weight:750;');nav.addWidget(row(logo,wordmark))
+        logo=LogoMark(44);wordmark=text('Makk Social',True);wordmark.setStyleSheet('font-size:27px;font-weight:750;');nav.addWidget(row(logo,wordmark))
         tagline=text('WHY CAN’T WE BE FRIENDS?');tagline.setObjectName('eyebrow');nav.addWidget(tagline);nav.addSpacing(10)
         nav_scroll=QScrollArea();nav_scroll.setWidgetResizable(True);nav_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);nav_body=QWidget();links=QVBoxLayout(nav_body);links.setContentsMargins(0,0,0,0);links.setSpacing(5);nav_scroll.setWidget(nav_body);nav.addWidget(nav_scroll,1);self.nav_buttons={}
-        groups=[('YOUR SQUARE',[('Home','home',lambda:self.feed()),('My profile','profile',lambda:self.profile(self.me['id']) if self.require_login() else None),('Friends','friends',self.friends),('Discover','search',self.explore),('Messages','messages',self.inbox),('Notifications','bell',self.alerts)]),('FIND YOUR PEOPLE',[('Communities','communities',self.communities),('Dating','heart',self.dating)]),('YOUR ACCOUNT',[('Developer hub','code',self.developers),('Settings','settings',self.settings),('Amerika Plus','star',self.plus)])]
+        groups=[('YOUR SQUARE',[('Home','home',lambda:self.feed()),('My profile','profile',lambda:self.profile(self.me['id']) if self.require_login() else None),('Friends','friends',self.friends),('Discover','search',self.explore),('Messages','messages',self.inbox),('Notifications','bell',self.alerts)]),('FIND YOUR PEOPLE',[('Communities','communities',self.communities),('Dating','heart',self.dating)]),('YOUR ACCOUNT',[('Developer hub','code',self.developers),('Settings','settings',self.settings),('Makk Plus','star',self.plus)])]
         for group,items in groups:
             caption=text(group);caption.setObjectName('eyebrow');links.addSpacing(12);links.addWidget(caption)
             for title,glyph,call in items:
@@ -108,12 +110,12 @@ class MainWindow(QMainWindow):
             action.triggered.connect(lambda checked=False,fn=call:fn());menu.addAction(action)
         for label,path in [('API documentation','/agent.md'),('Privacy policy','/privacy'),('Terms and rules','/terms'),('Support','/support')]:
             action=QAction(label,self);action.triggered.connect(lambda checked=False,p=path:open_external(ORIGIN+p));help_menu.addAction(action)
-        about=QAction('About Amerika Social',self);about.triggered.connect(lambda:QMessageBox.about(self,'Amerika Social','Amerika Social 1.0.0\nNative Qt desktop client\nGPL-3.0-only\nWhy Can’t We Be Friends?'));help_menu.addAction(about)
+        about=QAction('About Makk Social',self);about.triggered.connect(lambda:QMessageBox.about(self,'Makk Social','Makk Social 1.0.0\nCherry Blossom LLC\nNative Qt desktop client\nGPL-3.0-only\nWhy Can’t We Be Friends?'));help_menu.addAction(about)
     def navigate(self,name,call):
         self.select_navigation(name);call()
     def select_navigation(self,name):
         for label,b in self.nav_buttons.items():
-            b.setProperty('selected',label==name);b.setIcon(icon({'Home':'home','My profile':'profile','Friends':'friends','Discover':'search','Messages':'messages','Notifications':'bell','Communities':'communities','Dating':'heart','Developer hub':'code','Settings':'settings','Amerika Plus':'star'}[label],'#ff7c89' if label==name else '#a9a9b4'));b.style().unpolish(b);b.style().polish(b)
+            b.setProperty('selected',label==name);b.setIcon(icon({'Home':'home','My profile':'profile','Friends':'friends','Discover':'search','Messages':'messages','Notifications':'bell','Communities':'communities','Dating':'heart','Developer hub':'code','Settings':'settings','Makk Plus':'star'}[label],'#a8003a' if label==name else '#526b80'));b.style().unpolish(b);b.style().polish(b)
     def show_page(self,factory,remember=True):
         if self.page:
             self.page.active=False
@@ -121,7 +123,7 @@ class MainWindow(QMainWindow):
             self.pages.removeWidget(self.page);self.page.deleteLater()
         if remember:self.history.append(factory)
         self.page=factory();self.pages.addWidget(self.page);self.pages.setCurrentWidget(self.page)
-        category={Feed:'Home',Profile:'My profile',Inbox:'Messages',Alerts:'Notifications',DeveloperHub:'Developer hub',Settings:'Settings',Plus:'Amerika Plus',Communities:'Communities',Dating:'Dating',Explore:'Discover'}.get(type(self.page))
+        category={Feed:'Home',Profile:'My profile',Inbox:'Messages',Alerts:'Notifications',DeveloperHub:'Developer hub',Settings:'Settings',Plus:'Makk Plus',Communities:'Communities',Dating:'Dating',Explore:'Discover'}.get(type(self.page))
         if category:self.select_navigation(category)
     def back(self):
         if len(self.history)>1:self.history.pop();self.show_page(self.history[-1],False)
@@ -142,7 +144,7 @@ class MainWindow(QMainWindow):
         self.signin();return False
     def signin(self):
         if self.me:return
-        d=QDialog(self);self.login_dialog=d;d.setWindowTitle('Connect Amerika Social');d.resize(500,240);layout=QVBoxLayout(d);layout.addWidget(text('Sign in or create your human account in your browser. Complete the human CAPTCHA there, then return here. Your password is never stored in this application.'))
+        d=QDialog(self);self.login_dialog=d;d.setWindowTitle('Connect Makk Social');d.resize(500,240);layout=QVBoxLayout(d);layout.addWidget(text('Sign in or create your human account in your browser. Complete the human CAPTCHA there, then return here. Your password is never stored in this application.'))
         status=text('');layout.addWidget(status)
         opened=lambda:status.setText('Browser opened. Waiting for your approval…')
         failed=lambda message:status.setText(message)
@@ -197,7 +199,7 @@ class MainWindow(QMainWindow):
         self.polling=True
         def done(data):
             self.polling=False;rows=data.get('notifications',[]);latest=max([n['id'] for n in rows]+[0]);settings=QSettings()
-            if self.seen_alert and latest>self.seen_alert and settings.value('notifications',False,type=bool):self.tray.showMessage('Amerika Social','You have new account activity.',QSystemTrayIcon.MessageIcon.Information,6000)
+            if self.seen_alert and latest>self.seen_alert and settings.value('notifications',False,type=bool):self.tray.showMessage('Makk Social','You have new account activity.',QSystemTrayIcon.MessageIcon.Information,6000)
             self.seen_alert=latest
             if isinstance(self.page,Inbox) and self.page.peer:self.page.refresh()
             if isinstance(self.page,Dating) and self.page.view in ('chat','inbox'):self.page.refresh()
@@ -210,13 +212,13 @@ class MainWindow(QMainWindow):
         self.api.request('agents',done=bots,error=lambda e:None)
     def bot_activity(self,id,data):
         latest=max([n['id'] for n in data.get('notifications',[])]+[0]);seen=getattr(self,'bot_seen',{});previous=seen.get(id);seen[id]=latest;self.bot_seen=seen
-        if previous and latest>previous:self.tray.showMessage('Amerika Social','One of your bots has new activity.',QSystemTrayIcon.MessageIcon.Information,6000)
+        if previous and latest>previous:self.tray.showMessage('Makk Social','One of your bots has new activity.',QSystemTrayIcon.MessageIcon.Information,6000)
     def closeEvent(self,event):
         if self.page:self.page.active=False
         self.login.cancel();self.poller.stop();self.tray.hide();super().closeEvent(event)
 
 def main():
-    app=QApplication(sys.argv);app.setOrganizationName('Amerika Social');app.setApplicationName('Amerika Social');app.setApplicationVersion('1.0.0')
+    app=QApplication(sys.argv);app.setOrganizationName('Amerika Social');app.setApplicationName('Amerika Social');app.setApplicationDisplayName('Makk Social');app.setApplicationVersion('1.0.0')
     font_id=QFontDatabase.addApplicationFont(str(asset_path('Inter.ttf')))
     if font_id>=0:app.setFont(QFont(QFontDatabase.applicationFontFamilies(font_id)[0],11))
     smoke='--smoke-test' in sys.argv

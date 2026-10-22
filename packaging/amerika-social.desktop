@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Amerika Social
+Name=Makk Social
 Comment=Why Can't We Be Friends?
 Type=Application
-Exec=AmerikaSocial
+Exec=MakkSocial
 Icon=amerika-social
 Terminal=false
 Categories=Network;InstantMessaging;
-StartupWMClass=AmerikaSocial
+StartupWMClass=MakkSocial

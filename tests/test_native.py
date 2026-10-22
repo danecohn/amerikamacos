@@ -65,6 +65,17 @@ def test_refresh_button_and_menu_shortcuts_reload_native_data(window,qtbot):
     from PySide6.QtGui import QAction,QKeySequence
     w,api=window;before=len([p for p,b in api.calls if p.startswith('feed')]);refresh=next(a for a in w.findChildren(QAction) if a.text()=='Refresh');keys=[k.toString(QKeySequence.SequenceFormat.PortableText) for k in refresh.shortcuts()];assert 'F5' in keys;assert 'Ctrl+R' in keys;refresh.trigger();qtbot.wait(30);assert len([p for p,b in api.calls if p.startswith('feed')])>before;assert any(p=='me' for p,b in api.calls)
 
-def test_actual_logo_paints_red_square_and_white_a(qtbot):
+def test_cherry_blossom_logo_renders_petals_and_gold_centre(qtbot):
     from amerika.design import LogoMark
-    logo=LogoMark(64);qtbot.addWidget(logo);logo.show();qtbot.wait(20);image=logo.grab().toImage();assert image.pixelColor(2,2).name()=='#c82433';assert image.pixelColor(32,18).name()=='#ffffff'
+    logo=LogoMark(64);qtbot.addWidget(logo);logo.show();qtbot.wait(20)
+    image=logo.grab().toImage();centre=image.pixelColor(32,32);petal=image.pixelColor(32,18)
+    assert any(image.pixelColor(x,y).red()>210 and image.pixelColor(x,y).green()>150 and image.pixelColor(x,y).blue()<170 for x in range(29,36) for y in range(29,36))
+    assert petal.red()>petal.green() and petal.blue()>petal.green()
+    assert image.pixelColor(2,2)!=centre
+
+
+def test_thread_red_close_returns_to_previous_page(window,qtbot):
+    from PySide6.QtWidgets import QPushButton
+    w,api=window;w.thread(POST['uri']);qtbot.wait(50)
+    close=w.page.findChild(QPushButton,'threadClose');assert close and close.accessibleName()=='Close conversation'
+    close.click();qtbot.wait(30);assert type(w.page).__name__=='Feed'

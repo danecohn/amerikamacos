@@ -38,11 +38,11 @@ PATHS={
 
 # The same vector artwork as assets/logo.svg and the website logo. Painting it
 # directly avoids platform image-plugin and layout-dependent pixmap handling.
-BRAND_SVG=b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#c82433"/><path fill="#fff" fill-rule="evenodd" d="M12 50 26 14h12l14 36H41l-3-8H26l-3 8Zm17-17h6l-3-10Z"/></svg>'
+BRAND_SVG=b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img"><title>Cherry Blossom LLC \xc2\xb7 Makk OS</title><defs><linearGradient id="petal" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#fff0f5"/><stop offset=".55" stop-color="#ff8cb4"/><stop offset="1" stop-color="#ff0058"/></linearGradient></defs><g transform="rotate(0 32 32)"><path d="M32 31 C22 26 17 17 22 10 C25 6 29 6 32 10 C35 6 39 6 42 10 C47 17 42 26 32 31Z" fill="url(#petal)" stroke="#c00042" stroke-width=".7"/></g><g transform="rotate(72 32 32)"><path d="M32 31 C22 26 17 17 22 10 C25 6 29 6 32 10 C35 6 39 6 42 10 C47 17 42 26 32 31Z" fill="url(#petal)" stroke="#c00042" stroke-width=".7"/></g><g transform="rotate(144 32 32)"><path d="M32 31 C22 26 17 17 22 10 C25 6 29 6 32 10 C35 6 39 6 42 10 C47 17 42 26 32 31Z" fill="url(#petal)" stroke="#c00042" stroke-width=".7"/></g><g transform="rotate(216 32 32)"><path d="M32 31 C22 26 17 17 22 10 C25 6 29 6 32 10 C35 6 39 6 42 10 C47 17 42 26 32 31Z" fill="url(#petal)" stroke="#c00042" stroke-width=".7"/></g><g transform="rotate(288 32 32)"><path d="M32 31 C22 26 17 17 22 10 C25 6 29 6 32 10 C35 6 39 6 42 10 C47 17 42 26 32 31Z" fill="url(#petal)" stroke="#c00042" stroke-width=".7"/></g><circle cx="32" cy="32" r="5" fill="#f5c879" stroke="#ca9151" stroke-width=".7"/><g transform="rotate(0 32 32)"><path d="M32 32 V23" stroke="#c37a64" stroke-width=".8"/><circle cx="32" cy="23" r="1.1" fill="#fff2ce"/></g><g transform="rotate(72 32 32)"><path d="M32 32 V23" stroke="#c37a64" stroke-width=".8"/><circle cx="32" cy="23" r="1.1" fill="#fff2ce"/></g><g transform="rotate(144 32 32)"><path d="M32 32 V23" stroke="#c37a64" stroke-width=".8"/><circle cx="32" cy="23" r="1.1" fill="#fff2ce"/></g><g transform="rotate(216 32 32)"><path d="M32 32 V23" stroke="#c37a64" stroke-width=".8"/><circle cx="32" cy="23" r="1.1" fill="#fff2ce"/></g><g transform="rotate(288 32 32)"><path d="M32 32 V23" stroke="#c37a64" stroke-width=".8"/><circle cx="32" cy="23" r="1.1" fill="#fff2ce"/></g></svg>\n'
 
 class LogoMark(QWidget):
     def __init__(self,size=44):
-        super().__init__();self.setFixedSize(size,size);self.setAccessibleName('Amerika Social red-square A logo');self.renderer=QSvgRenderer(QByteArray(BRAND_SVG),self)
+        super().__init__();self.setFixedSize(size,size);self.setAccessibleName('Cherry Blossom LLC cherry blossom logo');self.renderer=QSvgRenderer(QByteArray(BRAND_SVG),self)
     def paintEvent(self,event):
         painter=QPainter(self);self.renderer.render(painter,QRectF(self.rect()));painter.end()
 
@@ -85,7 +85,7 @@ def action(label,name,call,active=False):
 
 class PostText(QTextBrowser):
     def __init__(self,app,value):
-        super().__init__();self.app=app;self.setFrameShape(QFrame.Shape.NoFrame);self.setOpenLinks(False);self.setOpenExternalLinks(False);self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.setSizePolicy(QSizePolicy.Policy.Expanding,QSizePolicy.Policy.Fixed);self.document().setDocumentMargin(0);self.setStyleSheet('QTextBrowser{background:transparent;border:0;color:#eeeef3;font-size:15px;padding:0;}');self.document().setDefaultStyleSheet('a {color:#ff8b99;text-decoration:none;}')
+        super().__init__();self.app=app;self.setFrameShape(QFrame.Shape.NoFrame);self.setOpenLinks(False);self.setOpenExternalLinks(False);self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.setSizePolicy(QSizePolicy.Policy.Expanding,QSizePolicy.Policy.Fixed);self.document().setDocumentMargin(0);self.setStyleSheet('QTextBrowser{background:transparent;border:0;color:#263e52;font-size:15px;padding:0;}');self.document().setDefaultStyleSheet('a {color:#ff8b99;text-decoration:none;}')
         parts=[];offset=0
         for match in re.finditer(r'https?://[^\s<>]+|(?<!\w)@[a-zA-Z0-9._-]+|(?<!\w)#[\w]+',value):
             parts.append(escape(value[offset:match.start()]));token=match.group()

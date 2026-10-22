@@ -25,11 +25,11 @@ jobs:
         shell: bash
         run: |
           mkdir -p validation
-          dist/AmerikaSocial.app/Contents/MacOS/AmerikaSocial --smoke-test validation/native-smoke.png
+          dist/MakkSocial.app/Contents/MacOS/MakkSocial --smoke-test validation/native-smoke.png
           test -s validation/native-smoke.png
       - uses: actions/upload-artifact@v7
         with:
-          name: AmerikaSocial-macOS
+          name: MakkSocial-macOS
           path: |
             release/*
             validation/*.png

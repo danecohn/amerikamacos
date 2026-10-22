@@ -1,7 +1,7 @@
 from urllib.parse import quote
 import re
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QPlainTextEdit,QDialog,QFileDialog,QLineEdit,QComboBox,QLabel,QInputDialog,QApplication,QCheckBox,QMenu
+from PySide6.QtWidgets import QPushButton, QWidget,QVBoxLayout,QHBoxLayout,QPlainTextEdit,QDialog,QFileDialog,QLineEdit,QComboBox,QLabel,QInputDialog,QApplication,QCheckBox,QMenu
 from .widgets import Page,Listing,Media,text,button,row,clear,confirm,field
 from .api import ORIGIN
 from .design import Avatar,action,icon,timestamp,PostText,LogoMark
@@ -133,7 +133,14 @@ class Feed(Page):
 
 class Thread(Page):
     def __init__(self,app,uri):
-        super().__init__(app,'Conversation');self.uri=uri;self.rows=QVBoxLayout();self.content.addLayout(self.rows);self.cursor=None;self.busy=False
+        super().__init__(app,'Conversation');self.uri=uri;
+        chrome=self.layout().itemAt(0).widget();chrome.setObjectName('threadChrome');bar=chrome.layout()
+        for index,(symbol,ident,label,callback) in enumerate([
+            ('×','threadClose','Close conversation',app.back),
+            ('−','threadMinimize','Minimize window',app.showMinimized),
+            ('+','threadMaximize','Maximize or restore window',lambda:app.showNormal() if app.isMaximized() else app.showMaximized())]):
+            control=QPushButton(symbol);control.setObjectName(ident);control.setFixedSize(24,24);control.setAccessibleName(label);control.setToolTip(label);control.clicked.connect(callback);bar.insertWidget(index,control)
+        self.rows=QVBoxLayout();self.content.addLayout(self.rows);self.cursor=None;self.busy=False
         self.more=self.add(button('Older replies',lambda:self.load(True)));self.loaders.append(self.load);self.load()
     def load(self,more=False):
         if self.busy:return
