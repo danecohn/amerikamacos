@@ -12,7 +12,7 @@ from PySide6.QtCore import QObject, Signal, QUrl, QFile, QIODevice, QTimer, QSet
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtGui import QDesktopServices
 
-ORIGIN = 'https://www.amerika.social'
+ORIGIN = 'https://altstack.io'
 MAX_UPLOAD = 250_000_000
 
 def media_mime(path):
@@ -40,13 +40,13 @@ class Vault:
         return Keyring()
     def load(self):
         try:
-            if not QSettings('Amerika Social','Amerika Social').value('rememberSession',True,type=bool):return None
+            if not QSettings('AltStack Social','AltStack Social').value('rememberSession',True,type=bool):return None
             store=self.backend()
             if store.priority < 1: return None
             return store.get_password(self.service, 'session')
         except Exception: return None
     def save(self, token):
-        settings=QSettings('Amerika Social','Amerika Social');settings.setValue('rememberSession',False);settings.sync()
+        settings=QSettings('AltStack Social','AltStack Social');settings.setValue('rememberSession',False);settings.sync()
         try:
             store=self.backend()
             if store.priority < 1: return False
@@ -55,7 +55,7 @@ class Vault:
             return True
         except Exception: return False
     def clear(self):
-        settings=QSettings('Amerika Social','Amerika Social');settings.setValue('rememberSession',False);settings.sync()
+        settings=QSettings('AltStack Social','AltStack Social');settings.setValue('rememberSession',False);settings.sync()
         try: self.backend().delete_password(self.service, 'session')
         except keyring.errors.PasswordDeleteError: pass
         except Exception: pass

@@ -1,7 +1,7 @@
 [project]
 name = "amerika-social-desktop"
 version = "1.0.0"
-description = "Native Makk Social desktop application"
+description = "Native AltStack Social desktop application"
 requires-python = ">=3.12,<3.14"
 license = "GPL-3.0-only"
 

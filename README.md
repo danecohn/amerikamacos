@@ -1,6 +1,9 @@
-# Makk Social — native desktop
+# AltStack Social for macOS
 
-Why Can’t We Be Friends? Native Qt desktop application for Makk Social, using the same production backend and accounts as the website. The application interface consists of native widgets, not an embedded website. The three desktop repositories share feature code and keep independent platform packaging.
+**AltStack LLC · An alternative stack for everyone.**
+
+
+Why Can’t We Be Friends? Native Qt desktop application for AltStack Social, using the same production backend and accounts as the website. The application interface consists of native widgets, not an embedded website. The three desktop repositories share feature code and keep independent platform packaging.
 
 ## Run from source
 
@@ -29,7 +32,7 @@ Sessions are stored in Windows Credential Manager, macOS Keychain, or a Linux Se
 - Makk Dating: human-only 18+ onboarding, private drafts, up to six photos, profile grid, age/gender/sexuality/dynamic/intent filters, bios and prompts, optional approximate distance, message requests, accept/decline, matches, private chat and 250 MB photos/video, unmatch, block, private reporting, pause and deletion. Private media links renew when expired.
 - Developer hub: create/link bots, profile photos, bios, personality, privacy and recovery, manual bot posts and activity, bot API credentials, OAuth MCP connections with expiry or no expiry, service-wide account MCP, authorized-app revocation, signed webhooks/custom signing secrets/tests/delivery status, MCP event subscriptions, and API documentation.
 - Account settings: profile/photo, friends privacy, welcome invitations, recovery codes, blocked accounts, optional location verification, sign-out and permanent deletion with password plus typed confirmation.
-- Makk Social Plus: existing entitlements sync across clients; purchase/manage via secure Stripe browser checkout. Apple subscriptions are managed separately through Apple. Desktop apps do not claim StoreKit purchases or collect card data.
+- AltStack Social Plus: existing entitlements sync across clients; purchase/manage via secure Stripe browser checkout. Apple subscriptions are managed separately through Apple. Desktop apps do not claim StoreKit purchases or collect card data.
 - Role-protected moderation/admin dashboard: reports, content/account review, reversible decisions with evidence, audit, staff roles, moderation OAuth MCP and webhook controls, private Dating reports, backup status/actions and deletion jobs. Server authorization remains authoritative.
 
 Use the top-right Refresh button, F5, Ctrl+R on Windows/Linux, or Command+R on macOS to reload the current view and account status. Editable form drafts are preserved during refresh. Ctrl+N writes a post; Ctrl+K opens discovery; Alt+Left navigates back. Native system file pickers, menus, keyboard focus and selectable text are supported. Video playback uses Qt Multimedia and available system codecs. Location is opt-in; some Linux environments have no location provider, in which case the feature reports that it is unavailable.
@@ -42,7 +45,7 @@ python -m pytest -q
 python build.py
 ```
 
-Build on the destination OS. `platform.json` identifies this repository's target. Windows produces a portable application ZIP containing `MakkSocial.exe`; keep its adjacent `_internal` folder. macOS produces an `.app` bundle and DMG. Linux produces an executable directory in a `.tar.gz`; `install-linux.sh` installs it for the current user without root. Linux builds target Ubuntu 24.04 or compatible newer glibc systems and require a graphical session and Qt's X11/Wayland system libraries. Native binaries do not require a separately installed Python runtime.
+Build on the destination OS. `platform.json` identifies this repository's target. Windows produces a portable application ZIP containing `AltStackSocial.exe`; keep its adjacent `_internal` folder. macOS produces an `.app` bundle and DMG. Linux produces an executable directory in a `.tar.gz`; `install-linux.sh` installs it for the current user without root. Linux builds target Ubuntu 24.04 or compatible newer glibc systems and require a graphical session and Qt's X11/Wayland system libraries. Native binaries do not require a separately installed Python runtime.
 
 GitHub Actions runs tests and creates an OS-native package on each source push. Download its artifact from the repository's Actions page. Packages are unsigned development distributions. Public Windows SmartScreen reputation requires code signing; normal macOS Gatekeeper distribution requires Apple Developer ID signing and notarization. No signing identity or store account is assumed or bundled. These packages are not Microsoft Store, Mac App Store, or Linux store submissions. There are no automatic updates yet; install a newer package to update.
 
@@ -50,4 +53,4 @@ GitHub Actions runs tests and creates an OS-native package on each source push. 
 
 Test sign-in/CAPTCHA and recovery using your own test account; complete a Test Mode Stripe checkout before billing rollout; test microphone-free video playback and 250 MB file uploads on your target devices; grant location only when desired; test OS notifications and keyring persistence in the destination environment. Configure platform signing before public distribution. CI smoke tests and fixture screenshots do not certify all live payment, location-provider or codec combinations.
 
-All desktop repositories are GPL-3.0-only, consistent with the Makk Social projects. Keep `LICENSE` and third-party notices with redistributions. See `SECURITY.md`, `FEATURE-PARITY.md` and `THIRD-PARTY-NOTICES.md`.
+All desktop repositories are GPL-3.0-only, consistent with the AltStack Social projects. Keep `LICENSE` and third-party notices with redistributions. See `SECURITY.md`, `FEATURE-PARITY.md` and `THIRD-PARTY-NOTICES.md`.
