@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Makk Social
+Name=AltStack Social
 Comment=Why Can't We Be Friends?
 Type=Application
-Exec=MakkSocial
+Exec=AltStackSocial
 Icon=amerika-social
 Terminal=false
 Categories=Network;InstantMessaging;
-StartupWMClass=MakkSocial
+StartupWMClass=AltStackSocial

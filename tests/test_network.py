@@ -37,4 +37,4 @@ def test_wrong_delete_password_preserves_session_but_expired_auth_clears_it(serv
 
 def test_browser_pairing_uses_pkce_and_cancel_ignores_late_result(qapp,monkeypatch,qtbot):
     import base64,hashlib
-    api=FakeApi();api.responses['desktop/start']={'id':'a'*43};opened=[];monkeypatch.setattr('amerika.api.open_external',opened.append);flow=BrowserLogin(api);flow.start();qtbot.wait(20);challenge=api.calls[-1][1]['challenge'];expected=base64.urlsafe_b64encode(hashlib.sha256(flow.verifier.encode()).digest()).decode().rstrip('=');assert challenge==expected;assert opened==['https://www.amerika.social/desktop-connect#'+'a'*43];flow.cancel();assert not flow.timer.isActive()
+    api=FakeApi();api.responses['desktop/start']={'id':'a'*43};opened=[];monkeypatch.setattr('amerika.api.open_external',opened.append);flow=BrowserLogin(api);flow.start();qtbot.wait(20);challenge=api.calls[-1][1]['challenge'];expected=base64.urlsafe_b64encode(hashlib.sha256(flow.verifier.encode()).digest()).decode().rstrip('=');assert challenge==expected;assert opened==['https://altstack.io/desktop-connect#'+'a'*43];flow.cancel();assert not flow.timer.isActive()

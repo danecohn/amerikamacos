@@ -5,7 +5,7 @@ from .social import PostCard,person
 
 class Communities(Page):
     def __init__(self,app,community=None):
-        super().__init__(app,'Makk Communities');self.community_id=community;self.detail_area=QVBoxLayout();self.content.addLayout(self.detail_area);self.group=None
+        super().__init__(app,'AltStack Communities');self.community_id=community;self.detail_area=QVBoxLayout();self.content.addLayout(self.detail_area);self.group=None
         if community:
             self.loaders.append(self.load_detail);self.load_detail();return
         self.add(text('Community posts appear in the main timeline and in their own spaces.'))

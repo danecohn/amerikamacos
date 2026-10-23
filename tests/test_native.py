@@ -36,7 +36,7 @@ def test_profile_photo_is_small_and_strips_metadata(tmp_path):
     source=tmp_path/'photo.png';Image.new('RGB',(1600,1600),'red').save(source);encoded=profile_photo(source);raw=base64.b64decode(encoded.split(',')[1]);assert len(raw)<=150000;assert raw.startswith(b'\xff\xd8\xff')
 
 def test_iphone_media_and_safe_links():
-    assert media_mime('IMG_0001.HEIC')=='image/heic';assert media_mime('IMG_0002.MOV')=='video/quicktime';assert MAX_UPLOAD==250000000;assert not safe_url('javascript:alert(1)');assert not safe_url('https://user:password@example.com');assert safe_url('https://www.amerika.social/privacy')
+    assert media_mime('IMG_0001.HEIC')=='image/heic';assert media_mime('IMG_0002.MOV')=='video/quicktime';assert MAX_UPLOAD==250000000;assert not safe_url('javascript:alert(1)');assert not safe_url('https://user:password@example.com');assert safe_url('https://altstack.io/privacy')
 
 def test_api_rejects_unapproved_origins(qapp):
     with pytest.raises(ValueError):Api('http://evil.example',restore=False)

@@ -14,7 +14,7 @@ COMMUNITY={'id':'community','name':'Music friends','slug':'music-friends','membe
 
 class FakeApi(QObject):
     expired=Signal()
-    def __init__(self):super().__init__();self.origin='https://www.amerika.social';self.token='synthetic-test-session';self.calls=[];self.responses={};self.epoch=0
+    def __init__(self):super().__init__();self.origin='https://altstack.io';self.token='synthetic-test-session';self.calls=[];self.responses={};self.epoch=0
     def clear(self):self.token=None;self.epoch+=1
     def set_token(self,token):self.token=token;return False
     def asset(self,url,done,error=None):return None

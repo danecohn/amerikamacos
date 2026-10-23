@@ -1,4 +1,4 @@
-Amerika Social source is licensed under GPL-3.0-only.
+AltStack Social source is licensed under GPL-3.0-only.
 
 Qt for Python (PySide6), Shiboken and the Qt libraries are distributed under their applicable LGPL/GPL licenses. This application uses dynamically loaded Qt libraries. Their source, license information and replacement instructions are available at https://www.qt.io/licensing/open-source-lgpl-obligations and https://code.qt.io/ . Included Qt license files must remain with distributed builds. FFmpeg and other Qt multimedia dependencies have separate license notices included by the Qt distribution.
 
