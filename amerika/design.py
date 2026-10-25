@@ -1,3 +1,4 @@
+from pathlib import Path
 """Shared native desktop visual system. Vector icons remain sharp at any DPI."""
 import base64
 import re
@@ -42,9 +43,9 @@ BRAND_SVG=b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color=
 
 class LogoMark(QWidget):
     def __init__(self,size=44):
-        super().__init__();self.setFixedSize(size,size);self.setAccessibleName('Artemis Softworks LLC crescent and bow emblem');self.renderer=QSvgRenderer(QByteArray(BRAND_SVG),self)
+        super().__init__();self.setFixedSize(size,size);self.setAccessibleName('AltStack Social application icon');self.pixmap=QPixmap(str(Path(__file__).resolve().parents[1]/'assets/logo.png'))
     def paintEvent(self,event):
-        painter=QPainter(self);self.renderer.render(painter,QRectF(self.rect()));painter.end()
+        painter=QPainter(self);painter.drawPixmap(self.rect(),self.pixmap);painter.end()
 
 def icon(name,color='#c4c4cc',size=22):
     svg=f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{PATHS.get(name,PATHS["star"])}</svg>'
