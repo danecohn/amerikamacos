@@ -38,7 +38,7 @@ PATHS={
 
 # The same vector artwork as assets/logo.svg and the website logo. Painting it
 # directly avoids platform image-plugin and layout-dependent pixmap handling.
-BRAND_SVG=b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="#dce8e5"><title>Artemis Softworks LLC \xe2\x80\x94 crescent moon and archer\xe2\x80\x99s bow</title><path d="M306.762 99.018A177 177 0 1 0 306.762 412.982A157 157 0 0 1 306.762 99.018Z" fill="currentColor"/><path d="M326 87Q489 256 326 425M326 87V425M264 256H474M449 235l25 21-25 21" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="m380 38 5 17 17 5-17 5-5 17-5-17-17-5 17-5Z" fill="currentColor"/></svg>'
+BRAND_SVG=b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="#273941"><title>Artemis Softworks LLC \xe2\x80\x94 crescent moon and archer\xe2\x80\x99s bow</title><path d="M306.762 99.018A177 177 0 1 0 306.762 412.982A157 157 0 0 1 306.762 99.018Z" fill="currentColor"/><path d="M326 87Q489 256 326 425M326 87V425M264 256H474M449 235l25 21-25 21" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="m380 38 5 17 17 5-17 5-5 17-5-17-17-5 17-5Z" fill="currentColor"/></svg>'
 
 class LogoMark(QWidget):
     def __init__(self,size=44):
