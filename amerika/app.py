@@ -75,6 +75,23 @@ def asset_path(name):return Path(getattr(sys,'_MEIPASS',Path(__file__).resolve()
 
 STYLE += '\nQMainWindow::separator {background:#aabcc9;}\nQWidget#sidebar {background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #e4ebf2,stop:1 #d1dde8);border-right:1px solid #adbdcc;}\nQMenuBar {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #ffffff,stop:1 #d7e1e9);color:#263e52;border-bottom:1px solid #afbdca;}\nQMenuBar::item:selected,QMenu::item:selected {background:#ffe1ec;color:#9d0036;}\nQMenu {background:#f8fafc;color:#263e52;border:1px solid #a8b9c7;}\nQWidget#card,QWidget#composeCard,QWidget#sectionCard {background:#ffffff;border:1px solid #becdd9;border-radius:8px;}\nQPushButton {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fff,stop:1 #dce5ee);color:#2c455a;border:1px solid #acbdcb;border-radius:6px;padding:9px 14px;}\nQPushButton#primary {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #ff8db4,stop:1 #ff0058);color:#26000d;border-color:#c90045;font-weight:700;}\nQPushButton:focus,QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus {border:2px solid #ff0058;}\nQLineEdit,QTextEdit,QPlainTextEdit,QComboBox {background:#fff;color:#263e52;border:1px solid #afbfcd;border-radius:6px;padding:8px;selection-background-color:#ffb5ce;selection-color:#26000d;}\nQPushButton#threadClose,QPushButton#threadMinimize,QPushButton#threadMaximize {border-radius:12px;padding:0;font-size:18px;font-weight:700;min-height:24px;max-height:24px;min-width:24px;max-width:24px;}\nQPushButton#threadClose {background:qradialgradient(cx:.4,cy:.2,radius:.9,stop:0 #ffd4ca,stop:.5 #ed796d,stop:1 #be4036);border:1px solid #a43f36;color:#661a15;}\nQPushButton#threadMinimize {background:qradialgradient(cx:.4,cy:.2,radius:.9,stop:0 #fff3c0,stop:.5 #f0cb61,stop:1 #c9a33e);border:1px solid #ad8a32;color:#63501d;}\nQPushButton#threadMaximize {background:qradialgradient(cx:.4,cy:.2,radius:.9,stop:0 #e5ffc5,stop:.5 #a2d46e,stop:1 #6ba742);border:1px solid #6b9641;color:#344e1e;}\nQWidget#threadChrome {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fff,stop:1 #d5e0e9);border-bottom:1px solid #b0c0cd;border-radius:7px;padding:6px;}\nQToolTip {background:#fff4f8;color:#293f53;border:1px solid #c4a8b3;}\n'
 
+# Artemis Softworks LLC · Moonrise companion interface.
+STYLE += """
+QMainWindow,QWidget#main {background:#f5f0e6;color:#273941;}
+QWidget#sidebar {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #f1f2e9,stop:1 #dce8e5);border-right:1px solid #c5cec5;}
+QMenuBar,QWidget#threadChrome {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fffaf0,stop:1 #dce5df);color:#273941;border-color:#c5cec5;}
+QMenu {background:#fffdf6;color:#273941;border:1px solid #c5cec5;}
+QMenuBar::item:selected,QMenu::item:selected,QPushButton#nav[selected="true"] {background:#dce5d9;color:#365660;border-color:#bdcdbd;}
+QWidget#card,QWidget#composeCard,QWidget#sectionCard {background:#fffdf6;border:1px solid #c5cec5;border-radius:12px;}
+QPushButton {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fffdf6,stop:1 #e0e8dd);color:#273941;border:1px solid #b7c6bd;border-radius:8px;padding:9px 14px;}
+QPushButton#primary {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #718e96,stop:1 #526e7b);color:white;border-color:#526e7b;}
+QPushButton#primary:hover {background:#617f88;}
+QPushButton:focus,QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus {border:2px solid #526e7b;}
+QLineEdit,QTextEdit,QPlainTextEdit,QComboBox {background:#fffdf6;color:#273941;border:1px solid #c5cec5;selection-background-color:#b8cdc9;selection-color:#273941;}
+QCheckBox::indicator:checked {background:#526e7b;border-color:#526e7b;}
+QToolTip {background:#fffdf6;color:#273941;border:1px solid #c5cec5;}
+"""
+
 class MainWindow(QMainWindow):
     def __init__(self,api=None):
         super().__init__();self.api=api or Api(parent=self);self.me=None;self.page=None;self.history=[];self.seen_alert=0;self.polling=False
