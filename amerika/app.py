@@ -77,19 +77,19 @@ STYLE += '\nQMainWindow::separator {background:#aabcc9;}\nQWidget#sidebar {backg
 
 # Artemis Softworks LLC · Moonrise companion interface.
 STYLE += """
-QMainWindow,QWidget#main {background:#f5f0e6;color:#273941;}
-QWidget#sidebar {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #f1f2e9,stop:1 #dce8e5);border-right:1px solid #c5cec5;}
-QMenuBar,QWidget#threadChrome {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fffaf0,stop:1 #dce5df);color:#273941;border-color:#c5cec5;}
-QMenu {background:#fffdf6;color:#273941;border:1px solid #c5cec5;}
-QMenuBar::item:selected,QMenu::item:selected,QPushButton#nav[selected="true"] {background:#dce5d9;color:#365660;border-color:#bdcdbd;}
-QWidget#card,QWidget#composeCard,QWidget#sectionCard {background:#fffdf6;border:1px solid #c5cec5;border-radius:12px;}
-QPushButton {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #fffdf6,stop:1 #e0e8dd);color:#273941;border:1px solid #b7c6bd;border-radius:8px;padding:9px 14px;}
-QPushButton#primary {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #718e96,stop:1 #526e7b);color:white;border-color:#526e7b;}
+QMainWindow,QWidget#main {background:#f5f5f7;color:#1d1d1f;}
+QWidget#sidebar {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #f5f7fb,stop:1 #eaf2ff);border-right:1px solid #d5dce8;}
+QMenuBar,QWidget#threadChrome {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #ffffff,stop:1 #e9eef7);color:#1d1d1f;border-color:#d5dce8;}
+QMenu {background:#ffffff;color:#1d1d1f;border:1px solid #d5dce8;}
+QMenuBar::item:selected,QMenu::item:selected,QPushButton#nav[selected="true"] {background:#eaf2ff;color:#0055aa;border-color:#cbd8ed;}
+QWidget#card,QWidget#composeCard,QWidget#sectionCard {background:#ffffff;border:1px solid #d5dce8;border-radius:12px;}
+QPushButton {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #ffffff,stop:1 #e0e8dd);color:#1d1d1f;border:1px solid #b7c6bd;border-radius:8px;padding:9px 14px;}
+QPushButton#primary {background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #1685ef,stop:1 #0066cc);color:white;border-color:#0066cc;}
 QPushButton#primary:hover {background:#617f88;}
-QPushButton:focus,QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus {border:2px solid #526e7b;}
-QLineEdit,QTextEdit,QPlainTextEdit,QComboBox {background:#fffdf6;color:#273941;border:1px solid #c5cec5;selection-background-color:#b8cdc9;selection-color:#273941;}
-QCheckBox::indicator:checked {background:#526e7b;border-color:#526e7b;}
-QToolTip {background:#fffdf6;color:#273941;border:1px solid #c5cec5;}
+QPushButton:focus,QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus {border:2px solid #0066cc;}
+QLineEdit,QTextEdit,QPlainTextEdit,QComboBox {background:#ffffff;color:#1d1d1f;border:1px solid #d5dce8;selection-background-color:#b8cdc9;selection-color:#1d1d1f;}
+QCheckBox::indicator:checked {background:#0066cc;border-color:#0066cc;}
+QToolTip {background:#ffffff;color:#1d1d1f;border:1px solid #d5dce8;}
 """
 
 class MainWindow(QMainWindow):
