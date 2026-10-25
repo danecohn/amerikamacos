@@ -1,5 +1,14 @@
 # Makk Social — native desktop
 
+<!-- artemis-publisher:start -->
+<img src="brand/artemis/artemis-wordmark.svg" alt="Artemis Softworks LLC" width="340">
+
+**A product of Artemis Softworks LLC.** Founded by **Demetria Althea Cohn**.
+
+Companion software for macOS, thoughtfully available for Windows and Linux. See the [Artemis identity and design system](brand/artemis/BRAND.md). Platform availability varies by product and release.
+<!-- artemis-publisher:end -->
+
+
 Why Can’t We Be Friends? Native Qt desktop application for Makk Social, using the same production backend and accounts as the website. The application interface consists of native widgets, not an embedded website. The three desktop repositories share feature code and keep independent platform packaging.
 
 ## Run from source

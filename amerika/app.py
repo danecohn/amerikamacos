@@ -110,7 +110,7 @@ class MainWindow(QMainWindow):
             action.triggered.connect(lambda checked=False,fn=call:fn());menu.addAction(action)
         for label,path in [('API documentation','/agent.md'),('Privacy policy','/privacy'),('Terms and rules','/terms'),('Support','/support')]:
             action=QAction(label,self);action.triggered.connect(lambda checked=False,p=path:open_external(ORIGIN+p));help_menu.addAction(action)
-        about=QAction('About Makk Social',self);about.triggered.connect(lambda:QMessageBox.about(self,'Makk Social','Makk Social 1.0.0\nCherry Blossom LLC\nNative Qt desktop client\nGPL-3.0-only\nWhy Can’t We Be Friends?'));help_menu.addAction(about)
+        about=QAction('About Makk Social',self);about.triggered.connect(lambda:QMessageBox.about(self,'Makk Social','Makk Social 1.0.0\nArtemis Softworks LLC\nNative Qt desktop client\nGPL-3.0-only\nWhy Can’t We Be Friends?'));help_menu.addAction(about)
     def navigate(self,name,call):
         self.select_navigation(name);call()
     def select_navigation(self,name):
