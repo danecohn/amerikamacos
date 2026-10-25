@@ -65,13 +65,16 @@ def test_refresh_button_and_menu_shortcuts_reload_native_data(window,qtbot):
     from PySide6.QtGui import QAction,QKeySequence
     w,api=window;before=len([p for p,b in api.calls if p.startswith('feed')]);refresh=next(a for a in w.findChildren(QAction) if a.text()=='Refresh');keys=[k.toString(QKeySequence.SequenceFormat.PortableText) for k in refresh.shortcuts()];assert 'F5' in keys;assert 'Ctrl+R' in keys;refresh.trigger();qtbot.wait(30);assert len([p for p,b in api.calls if p.startswith('feed')])>before;assert any(p=='me' for p,b in api.calls)
 
-def test_cherry_blossom_logo_renders_petals_and_gold_centre(qtbot):
+@pytest.mark.parametrize('size', [32, 64])
+def test_social_product_icon_renders_at_native_sizes(qtbot,size):
     from amerika.design import LogoMark
-    logo=LogoMark(64);qtbot.addWidget(logo);logo.show();qtbot.wait(20)
-    image=logo.grab().toImage();centre=image.pixelColor(32,32);petal=image.pixelColor(32,18)
-    assert any(image.pixelColor(x,y).red()>210 and image.pixelColor(x,y).green()>150 and image.pixelColor(x,y).blue()<170 for x in range(29,36) for y in range(29,36))
-    assert petal.red()>petal.green() and petal.blue()>petal.green()
-    assert image.pixelColor(2,2)!=centre
+    logo=LogoMark(size);qtbot.addWidget(logo);logo.show();qtbot.wait(20)
+    image=logo.grab().toImage()
+    colors={image.pixelColor(x,y).rgba() for x in range(0,image.width(),2) for y in range(0,image.height(),2)}
+    # A missing image or solid placeholder cannot satisfy the actual paint check.
+    assert len(colors)>50
+    assert image.pixelColor(image.width()//2,image.height()//2)!=image.pixelColor(1,1)
+    assert logo.accessibleName()=='AltStack Social application icon'
 
 
 def test_thread_red_close_returns_to_previous_page(window,qtbot):
