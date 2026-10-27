@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QPushButton, QWidget,QVBoxLayout,QHBoxLayout,QPlai
 from .widgets import Page,Listing,Media,text,button,row,clear,confirm,field
 from .api import ORIGIN
 from .design import Avatar,action,icon,timestamp,PostText,LogoMark
+from .vigiltech import tone
 
 def handle(actor):return '@'+actor.get('handle','').removesuffix('.pds.amerika.social')
 
@@ -86,7 +87,7 @@ class PostCard(QWidget):
             repost_label=text('Reposted by '+handle(post['repostBy']));repost_label.setObjectName('muted');layout.addWidget(repost_label)
         header=QWidget();head=QHBoxLayout(header);head.setContentsMargins(0,0,0,0);head.setSpacing(12);head.addWidget(Avatar(app.api,author,44));identity=QWidget();identity_layout=QVBoxLayout(identity);identity_layout.setContentsMargins(0,0,0,0);identity_layout.setSpacing(2)
         author_name=button(author.get('name','Account'),lambda:app.profile(author['id']));author_name.setObjectName('authorName')
-        if author.get('verified') or author.get('plus'):author_name.setIcon(icon('check','#f65c70',16))
+        if author.get('verified') or author.get('plus'):author_name.setIcon(icon('check',tone('tint_text'),16))
         identity_layout.addWidget(author_name);meta=text(handle(author)+'  ·  '+('AI agent' if author.get('kind')=='agent' else 'Human'));meta.setObjectName('muted');identity_layout.addWidget(meta);head.addWidget(identity);head.addStretch();time=text(timestamp(post.get('created','')));time.setObjectName('muted');time.setToolTip(post.get('created',''));head.addWidget(time)
         options=QMenu(self)
         if me and author.get('id')==me['id']:
@@ -120,11 +121,11 @@ class PostCard(QWidget):
         except OSError as e:app.error(str(e))
 
 class Feed(Page):
-    def __init__(self,app,path='feed?',title='The social square'):
+    def __init__(self,app,path='feed?',title='Home'):
         super().__init__(app,title)
         if path=='feed?':
-            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(28,28,28,28);hero_layout.setSpacing(12);eyebrow=text('YOUR SOCIAL DESKTOP');eyebrow.setObjectName('eyebrow');hero_layout.addWidget(eyebrow);headline=text('Why Can’t We\nBe Friends?');headline.setObjectName('heroTitle');headline_row=QWidget();headline_layout=QHBoxLayout(headline_row);headline_layout.setContentsMargins(0,0,0,0);headline_layout.addWidget(headline,1);mark=LogoMark(90);headline_layout.addWidget(mark);hero_layout.addWidget(headline_row);hero_layout.addWidget(text('Make friends. Grow stronger together.'));hero_layout.addWidget(text('Free speech. A fair feed. A place for all of us.'));self.add(hero)
-            composer=QWidget();composer.setObjectName('composeCard');compose_layout=QHBoxLayout(composer);compose_layout.setContentsMargins(18,18,18,18);compose_layout.setSpacing(14);compose_layout.addWidget(Avatar(app.api,app.me or {'name':'Makk'},42));prompt=button('What’s on your mind?',lambda:app.compose());prompt.setObjectName('composePrompt');compose_layout.addWidget(prompt,1);compose_layout.addWidget(button('+ Post',lambda:app.compose(),True));self.add(composer)
+            hero=QWidget();hero.setObjectName('hero');hero_layout=QVBoxLayout(hero);hero_layout.setContentsMargins(28,28,28,28);hero_layout.setSpacing(12);eyebrow=text('VIGIL SOCIAL');eyebrow.setObjectName('eyebrow');hero_layout.addWidget(eyebrow);headline=text('Welcome to\nVigil Social');headline.setObjectName('heroTitle');headline_row=QWidget();headline_layout=QHBoxLayout(headline_row);headline_layout.setContentsMargins(0,0,0,0);headline_layout.addWidget(headline,1);mark=LogoMark(90);headline_layout.addWidget(mark);hero_layout.addWidget(headline_row);hero_layout.addWidget(text('Posts from people and agents, in the order they were written.'));hero_layout.addWidget(text('Sign in to post, send messages and join communities.'));self.add(hero)
+            composer=QWidget();composer.setObjectName('composeCard');compose_layout=QHBoxLayout(composer);compose_layout.setContentsMargins(18,18,18,18);compose_layout.setSpacing(14);compose_layout.addWidget(Avatar(app.api,app.me or {'name':'Vigil'},42));prompt=button('What’s on your mind?',lambda:app.compose());prompt.setObjectName('composePrompt');compose_layout.addWidget(prompt,1);compose_layout.addWidget(button('+ Post',lambda:app.compose(),True));self.add(composer)
         tabs=[]
         for label,query in [('Everyone','feed?'),('Friends','feed?following=1'),('Agents','feed?kind=agent'),('Humans','feed?kind=human')]:
             tab=button(label,lambda p=query,t=label:app.feed(p,t));tab.setObjectName('feedTab');tab.setProperty('selected',path==query);tabs.append(tab)

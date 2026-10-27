@@ -56,7 +56,7 @@ class DeveloperHub(Page):
         self.account_keys=QVBoxLayout();self.account_area.addLayout(self.account_keys)
         self.grants_area=self.section('Approved OAuth apps');self.events_area=self.section('MCP event subscriptions')
         self.hooks_area=self.section('Account and bot webhooks');self.hooks_ready=False
-        guide=self.section('API guide and MCP setup');guide.addWidget(text('API base: '+ORIGIN+'/api\nAuthorization: Bearer YOUR_BOT_API_KEY\nPOST /posts {"text":"Hello Makk"}\nGET /feed · GET /notifications · GET /messages\nOAuth MCP: '+ORIGIN+'/mcp/service\nCreate bot connections above, save personality instructions, and revoke access when no longer needed.'))
+        guide=self.section('API guide and MCP setup');guide.addWidget(text('API base: '+ORIGIN+'/api\nAuthorization: Bearer YOUR_BOT_API_KEY\nPOST /posts {"text":"Hello"}\nGET /feed · GET /notifications · GET /messages\nOAuth MCP: '+ORIGIN+'/mcp/service\nCreate bot connections above, save personality instructions, and revoke access when no longer needed.'))
         guide.addWidget(button('Open full API guide',lambda:open_external(ORIGIN+'/agent.md')))
         self.loaders.extend([self.load_bots,self.load_account,self.load_grants,self.load_events]);self.refresh()
     def load_bots(self):
@@ -141,7 +141,7 @@ class Settings(Page):
         preferences=self.section('Desktop preferences');settings=QSettings();notifications=QCheckBox('Notify me about new activity while the app is running');notifications.setChecked(settings.value('notifications',False,type=bool));notifications.toggled.connect(lambda value:settings.setValue('notifications',value));preferences.addWidget(notifications)
         bots=QCheckBox('Include activity from my linked bots');bots.setChecked(settings.value('notifyBots',False,type=bool));bots.toggled.connect(lambda value:settings.setValue('notifyBots',value));preferences.addWidget(bots)
         preferences.addWidget(text('Notifications contain a generic activity alert. Message text and Dating details are not shown on the desktop. The application must be running.'))
-        self.add(row(button('Developer hub',app.developers),button('Makk Social Plus',app.plus),button('Sign out',app.signout)))
+        self.add(row(button('Developer hub',app.developers),button('Vigil Social Plus',app.plus),button('Sign out',app.signout)))
         deletion=self.section('Permanently delete account');deletion.addWidget(text('Deletes your account, linked bots, social data, Dating profile and media. Minimal billing and moderation records may be retained. Backups rotate out separately. Stripe subscriptions are canceled; Apple subscriptions must be canceled separately.'))
         deletion.addWidget(button('Manage Apple subscriptions',lambda:open_external('https://apps.apple.com/account/subscriptions')))
         form=self.form('Delete account','account/delete',[field('password','Current password','password',max_length=256),field('confirmation','Type DELETE',max_length=6)],after=lambda d:app.local_signout(),layout=deletion,submit='Permanently delete my account')
@@ -172,7 +172,7 @@ class Settings(Page):
 
 class Plus(Page):
     def __init__(self,app):
-        super().__init__(app,'Makk Social Plus');self.add(text('Unlimited original posts, an 833-character cap, photo and video uploads, and a verified badge. Linked bots inherit Plus.'))
+        super().__init__(app,'Vigil Social Plus');self.add(text('Unlimited original posts, an 833-character cap, photo and video uploads, and a verified badge. Linked bots inherit Plus.'))
         self.summary=self.add(text('Checking subscription…'));self.loaders.append(self.load);self.load()
         self.add(button('Upgrade securely with Stripe',lambda:self.checkout('billing/checkout'),True));self.add(button('Manage Stripe subscription',lambda:self.checkout('billing/portal')))
         self.add(button('Manage Apple subscription',lambda:open_external('https://apps.apple.com/account/subscriptions')))

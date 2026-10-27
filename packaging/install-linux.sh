@@ -10,4 +10,4 @@ ln -sf "$TARGET/MakkSocial" "$HOME/.local/bin/MakkSocial"
 ln -sf "$TARGET/MakkSocial" "$HOME/.local/bin/makk-social"
 cp "$TARGET/_internal/assets/logo.png" "$HOME/.local/share/icons/hicolor/512x512/apps/amerika-social.png"
 sed "s|Exec=MakkSocial|Exec=\"$TARGET/MakkSocial\"|" "$SOURCE/amerika-social.desktop" > "$HOME/.local/share/applications/amerika-social.desktop"
-printf '%s\n' 'Installed Makk Social for the current user.'
+printf '%s\n' 'Installed Vigil Social for the current user.'

@@ -5,7 +5,7 @@ from .hub import Settings
 
 class Dating(Page):
     def __init__(self,app,view='explore',subject=None,thread=None):
-        super().__init__(app,'Makk Dating');self.view=view;self.subject=subject;self.thread=thread;self.photos=[];self.media=[];self.upload_reply=None;self.built=False
+        super().__init__(app,'Vigil Dating');self.view=view;self.subject=subject;self.thread=thread;self.photos=[];self.media=[];self.upload_reply=None;self.built=False
         self.add(text('18+ · Find a date. Make a friend. Be yourself. Dating is optional and separate from your social profile.'))
         self.add(row(button('Explore',lambda:app.dating()),button('Requests & matches',lambda:app.dating('inbox')),button('My profile',lambda:app.dating('edit'))))
         self.loaders.append(self.load);self.load()

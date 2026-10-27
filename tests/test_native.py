@@ -74,7 +74,7 @@ def test_social_product_icon_renders_at_native_sizes(qtbot,size):
     # A missing image or solid placeholder cannot satisfy the actual paint check.
     assert len(colors)>50
     assert image.pixelColor(image.width()//2,image.height()//2)!=image.pixelColor(1,1)
-    assert logo.accessibleName()=='AltStack Social application icon'
+    assert logo.accessibleName()=='Vigil Social application icon'
 
 
 def test_thread_red_close_returns_to_previous_page(window,qtbot):

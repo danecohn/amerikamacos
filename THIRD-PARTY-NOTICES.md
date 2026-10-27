@@ -1,4 +1,4 @@
-Amerika Social source is licensed under GPL-3.0-only.
+Vigil Social source is licensed under GPL-3.0-only. Copyright (C) VigilTech.
 
 Qt for Python (PySide6), Shiboken and the Qt libraries are distributed under their applicable LGPL/GPL licenses. This application uses dynamically loaded Qt libraries. Their source, license information and replacement instructions are available at https://www.qt.io/licensing/open-source-lgpl-obligations and https://code.qt.io/ . Included Qt license files must remain with distributed builds. FFmpeg and other Qt multimedia dependencies have separate license notices included by the Qt distribution.
 
@@ -11,3 +11,5 @@ PyInstaller: GPL with its distribution exception. https://pyinstaller.org/en/sta
 The build includes installed dependency metadata and license texts. Do not remove those notices when redistributing the app. No third-party branding license is granted by this project's GPL license.
 
 Inter font: Copyright The Inter Project Authors, SIL Open Font License 1.1. Its complete license is bundled in assets/Inter-OFL.txt. https://github.com/rsms/inter
+
+Vigil Sans (assets/vigiltech/fonts) is a VigilTech typeface under the SIL Open Font License 1.1; its notice is in assets/vigiltech/fonts/OFL.txt. The VigilTech logos, wallpapers and design tokens in assets/vigiltech are GPL-3.0 (see assets/vigiltech/LICENSE).

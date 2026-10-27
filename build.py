@@ -24,10 +24,10 @@ if not arch:raise SystemExit('Unsupported build architecture: '+platform.machine
 if sys.platform=='darwin':
     app=root/'dist/MakkSocial.app'
     import plistlib
-    info=app/'Contents/Info.plist';data=plistlib.loads(info.read_bytes());data.update(CFBundleName='Makk Social',CFBundleDisplayName='Makk Social',CFBundleShortVersionString='1.0.0',CFBundleVersion='1',NSLocationWhenInUseUsageDescription='Optionally verify US presence or display approximate Dating distance.',NSHighResolutionCapable=True);info.write_bytes(plistlib.dumps(data))
+    info=app/'Contents/Info.plist';data=plistlib.loads(info.read_bytes());data.update(CFBundleName='Vigil Social',CFBundleDisplayName='Vigil Social',NSHumanReadableCopyright='Copyright © VigilTech. GPL-3.0-only.',LSApplicationCategoryType='public.app-category.social-networking',CFBundleShortVersionString='1.0.0',CFBundleVersion='1',NSLocationWhenInUseUsageDescription='Optionally verify US presence or display approximate Dating distance.',NSHighResolutionCapable=True);info.write_bytes(plistlib.dumps(data))
     # Ad-hoc signing allows local testing. Public distribution still requires Developer ID signing and notarization.
     subprocess.run(['codesign','--force','--deep','--sign','-',str(app)],check=True)
-    subprocess.run(['hdiutil','create','-volname','Makk Social','-srcfolder',str(app),'-ov','-format','UDZO',str(release/'MakkSocial-macOS.dmg')],check=True)
+    subprocess.run(['hdiutil','create','-volname','Vigil Social','-srcfolder',str(app),'-ov','-format','UDZO',str(release/'MakkSocial-macOS.dmg')],check=True)
 elif sys.platform=='win32':shutil.make_archive(str(release/f'MakkSocial-Windows-{arch}'),'zip',root/'dist','MakkSocial')
 else:
     out=root/'dist/MakkSocial';shutil.copy2(root/'packaging/amerika-social.desktop',out);shutil.copy2(root/'packaging/install-linux.sh',out);(out/'install-linux.sh').chmod(0o755)

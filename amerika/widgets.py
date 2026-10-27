@@ -11,6 +11,7 @@ from PySide6.QtMultimediaWidgets import QVideoWidget
 from .api import open_external, ORIGIN
 from shiboken6 import isValid
 from .design import icon
+from .vigiltech import tone
 
 def text(value, title=False):
     label=QLabel(str(value or '')); label.setTextFormat(Qt.TextFormat.PlainText); label.setWordWrap(True)
@@ -111,7 +112,7 @@ class Page(QWidget):
     def __init__(self,app,title):
         super().__init__(); self.app=app; self.api=app.api; self.generation=0; self.loaders=[]; self.active=True
         root=QVBoxLayout(self);root.setContentsMargins(28,26,28,16);root.setSpacing(18)
-        header=QWidget();header_layout=QHBoxLayout(header);header_layout.setContentsMargins(0,0,0,0);heading=QWidget();heading_layout=QVBoxLayout(heading);heading_layout.setContentsMargins(0,0,0,0);heading_layout.setSpacing(5);eyebrow=text('MAKK SOCIAL');eyebrow.setObjectName('eyebrow');heading_layout.addWidget(eyebrow);heading_layout.addWidget(text(title,True));header_layout.addWidget(heading);header_layout.addStretch();refresh=button('Refresh',app.refresh);refresh.setIcon(icon('refresh',size=18));refresh.setAccessibleName('Refresh page');refresh.setToolTip('Refresh this view · F5 or Ctrl+R / Command+R');header_layout.addWidget(refresh);root.addWidget(header)
+        header=QWidget();header_layout=QHBoxLayout(header);header_layout.setContentsMargins(0,0,0,0);heading=QWidget();heading_layout=QVBoxLayout(heading);heading_layout.setContentsMargins(0,0,0,0);heading_layout.setSpacing(5);eyebrow=text('VIGIL SOCIAL');eyebrow.setObjectName('eyebrow');heading_layout.addWidget(eyebrow);heading_layout.addWidget(text(title,True));header_layout.addWidget(heading);header_layout.addStretch();refresh=button('Refresh',app.refresh);refresh.setIcon(icon('refresh',size=18));refresh.setAccessibleName('Refresh page');refresh.setToolTip('Refresh this view · F5 or Ctrl+R / Command+R');header_layout.addWidget(refresh);root.addWidget(header)
         self.status=StatusLabel();self.status.setObjectName('muted'); root.addWidget(self.status); self.scroll=QScrollArea(); self.scroll.setWidgetResizable(True);self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.scroll.setAlignment(Qt.AlignmentFlag.AlignHCenter); root.addWidget(self.scroll)
         self.body=QWidget();self.body.setMaximumWidth(920); self.content=QVBoxLayout(self.body);self.content.setContentsMargins(0,0,8,12);self.content.setSpacing(18); self.content.setAlignment(Qt.AlignmentFlag.AlignTop); self.scroll.setWidget(self.body)
     def refresh(self):
@@ -130,7 +131,7 @@ class Page(QWidget):
     def add(self,widget): self.content.addWidget(widget); return widget
     def section(self,title,initial=False):
         group=QWidget();group.setObjectName('sectionCard');outer=QVBoxLayout(group);outer.setContentsMargins(0,0,0,0);outer.setSpacing(0);header=QPushButton(title);header.setObjectName('disclosureHeader');header.setCheckable(True);header.setChecked(initial);header.setAccessibleName(title);header.setCursor(Qt.CursorShape.PointingHandCursor);outer.addWidget(header);body=QWidget();inner=QVBoxLayout(body);inner.setContentsMargins(18,4,18,18);inner.setSpacing(16);outer.addWidget(body);body.setVisible(initial)
-        def toggle(value):body.setVisible(value);header.setIcon(icon('chevron-down' if value else 'chevron-right','#c6c6d1',18))
+        def toggle(value):body.setVisible(value);header.setIcon(icon('chevron-down' if value else 'chevron-right',tone('icon'),18))
         header.toggled.connect(toggle);toggle(initial);self.add(group);return inner
     def action(self,label,path,body,after=None,warning=None):
         def run():
@@ -202,7 +203,7 @@ class Media(QWidget):
         else:self.api.asset(self.url,done,lambda e:self.renew())
     def zoom(self):
         if not self.pixmap:return
-        dialog=QDialog(self);dialog.setWindowTitle(self.item.get('alt') or 'Makk photo');dialog.resize(900,700);layout=QVBoxLayout(dialog);scroll=QScrollArea();image=QLabel();image.setPixmap(self.pixmap);scroll.setWidget(image);layout.addWidget(scroll);layout.addWidget(button('Close',dialog.accept));dialog.exec()
+        dialog=QDialog(self);dialog.setWindowTitle(self.item.get('alt') or 'Photo');dialog.resize(900,700);layout=QVBoxLayout(dialog);scroll=QScrollArea();image=QLabel();image.setPixmap(self.pixmap);scroll.setWidget(image);layout.addWidget(scroll);layout.addWidget(button('Close',dialog.accept));dialog.exec()
 
 def profile_photo(path):
     from PIL import Image, ImageOps
